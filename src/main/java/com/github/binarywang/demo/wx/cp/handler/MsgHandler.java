@@ -25,7 +25,7 @@ public class MsgHandler extends AbstractHandler {
             // 如果msgType没有，就自己根据具体报文内容做处理
         }
 
-        if (!msgType.equals(WxConsts.XmlMsgType.EVENT)) {
+        if (msgType.equals(WxConsts.XmlMsgType.EVENT)) {
             //TODO 可以选择将消息保存到本地
         }
 
