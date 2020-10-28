@@ -61,7 +61,7 @@ public class MsgHandler extends AbstractHandler {
                 if(lst.length == 1){
                     stringBuffer.append("对不起，您输入的格式有误，请按照#查询文章内容 标题1的格式使用，中间需要加上空格");
                 }
-                Long articleID = null;
+                Long articleID = 0L;
                 for (int i = 1; i < lst.length; i++) {
                     DbUtils.getArticleIDByTitle(lst[i]);
                     stringBuffer.append(DbUtils.getContent(articleID));
