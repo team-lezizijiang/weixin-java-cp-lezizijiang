@@ -41,6 +41,7 @@ public class MsgHandler extends AbstractHandler {
                     r = DbUtils.getArticleIDByTag(lst[i]);
                     // 5、执行数据库操作
                     stringBuffer.append("您查询的关键词"+lst[i]+"对应的标题有\n");
+                    System.out.println(r);
                     // 6、获取并操作结果集
                     for (Long articleID: r){
                         stringBuffer.append(DbUtils.getTitle(articleID));
