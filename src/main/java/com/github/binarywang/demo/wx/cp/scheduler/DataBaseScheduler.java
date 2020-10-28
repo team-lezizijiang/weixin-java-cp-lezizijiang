@@ -8,12 +8,11 @@ import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class DateBaseScheduler {
-    private Logger logger = LoggerFactory.getLogger(DateBaseScheduler.class);
+public class DataBaseScheduler {
+    private Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
     Long lastArticleID;
     @Scheduled(cron = "0 0 8-18 * * *")
     public void update(){
