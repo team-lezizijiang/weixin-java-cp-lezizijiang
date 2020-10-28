@@ -35,7 +35,7 @@ public class MsgHandler extends AbstractHandler {
         // 数据库连接串
         String url = "jdbc:mysql://182.92.227.90:3306/wechat";
         // 用户名
-        String username = "lezizijiang";
+        String username = "lzzj";
         // 密码
         String password = "Lzzj0821.a";
         Connection conn = null;
@@ -56,7 +56,7 @@ public class MsgHandler extends AbstractHandler {
             rs = stmt.executeQuery(sql);
             // 6、获取并操作结果集
             while(rs.next()){
-                stringBuffer.append(rs.getInt("title\n"));
+                stringBuffer.append(rs.getBigDecimal("title\n"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,5 +89,6 @@ public class MsgHandler extends AbstractHandler {
         return new TextBuilder().build(content, wxMessage, cpService);
 
     }
-
+    //todo 定时查看数据库
+    //todo msghandler添加订阅、查询标题
 }
