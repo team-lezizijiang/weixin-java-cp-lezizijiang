@@ -24,14 +24,14 @@ import me.chanjar.weixin.cp.util.crypto.WxCpCryptUtil;
 @RestController
 @RequestMapping("/wx/cp/portal/{agentId}")
 public class WxPortalController {
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  private final Logger logger = LoggerFactory.getLogger(WxPortalController.class);
 
   @GetMapping(produces = "text/plain;charset=utf-8")
   public String authGet(@PathVariable Integer agentId,
-                        @RequestParam(name = "msg_signature", required = false) String signature,
-                        @RequestParam(name = "timestamp", required = false) String timestamp,
-                        @RequestParam(name = "nonce", required = false) String nonce,
-                        @RequestParam(name = "echostr", required = false) String echostr) {
+                        @RequestParam(name = "msg_signature", required = true) String signature,
+                        @RequestParam(name = "timestamp", required = true) String timestamp,
+                        @RequestParam(name = "nonce", required = true) String nonce,
+                        @RequestParam(name = "echostr", required = true) String echostr) {
     this.logger.info("\n接收到来自微信服务器的认证消息：signature = [{}], timestamp = [{}], nonce = [{}], echostr = [{}]",
         signature, timestamp, nonce, echostr);
 
@@ -83,6 +83,5 @@ public class WxPortalController {
 
     return null;
   }
-
 
 }
