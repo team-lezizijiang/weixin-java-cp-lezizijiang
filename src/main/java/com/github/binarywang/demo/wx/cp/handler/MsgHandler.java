@@ -41,13 +41,13 @@ public class MsgHandler extends AbstractHandler {
                     r = DbUtils.getArticleIDByTag(lst[i]);
                     // 5、执行数据库操作
                     stringBuffer.append("您查询的关键词"+lst[i]+"对应的标题有\n");
-                    System.out.println(r);
                     // 6、获取并操作结果集
                     for (Long articleID: r){
                         stringBuffer.append(DbUtils.getTitle(articleID));
                         stringBuffer.append("\n");
                     }
-                    if("".equals(stringBuffer.toString())){
+                    if(r.isEmpty()){
+                        stringBuffer = new StringBuffer();
                         stringBuffer.append("您输入的这个关键词尚无记录");
                     }
                 }
@@ -58,6 +58,7 @@ public class MsgHandler extends AbstractHandler {
                 for (int i = 1; i < lst.length; i++) {
                     DbUtils.subscribe(FromUserName, lst[i]);
                 }
+                stringBuffer.append("订阅成功");
             }else if("#查询文章内容".equals(lst[0])){
                 if(lst.length == 1){
                     stringBuffer.append("对不起，您输入的格式有误，请按照#查询文章内容 标题1的格式使用，中间需要加上空格");
@@ -68,10 +69,10 @@ public class MsgHandler extends AbstractHandler {
                     stringBuffer.append(DbUtils.getContent(articleID));
                 }
             }else{
-                stringBuffer.append("您输入内容无效，请先输入");
+                stringBuffer.append("您输入内容无效，请先输入#");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage());
         }
         content = stringBuffer.toString();
         return new TextBuilder().build(content, wxMessage, cpService);

@@ -3,6 +3,8 @@ logging:
         org.springframework.web: INFO
         com.github.binarywang.demo.wx.cp: DEBUG
         me.chanjar.weixin: DEBUG
+    file:
+        path: ./
 wechat:
     cp:
         corpId: "ww0db1bc3ecc363cfc"

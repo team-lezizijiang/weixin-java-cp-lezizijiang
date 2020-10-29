@@ -19,10 +19,11 @@ import java.util.List;
 @Component
 public class DataBaseScheduler {
     Long lastArticleID;
-    private final Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
 
     @Scheduled(cron = "0 0 8-18 * * *")
     public void update() {
+        logger.info("check update");
         try {
             if (DbUtils.getLastArticleID() > lastArticleID) {
                 List<Long> newArticles = DbUtils.getNewArticleID(lastArticleID);
