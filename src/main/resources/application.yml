@@ -15,3 +15,5 @@ wechat:
               aesKey: "MsqxNquQnFpaJ3bLoB43hRYhgYE6PkWnMfeUIjIcLjg"
 server:
     port: 8021
+sentry:
+    dsn: https://71c3f890943246b7be31d0805e849998@o318524.ingest.sentry.io/5497256
