@@ -20,9 +20,9 @@ public class WxCpProperties {
   /**
    * 设置企业微信的corpId
    */
-  private String corpId = "ww0db1bc3ecc363cfc";
+  private String corpId;
 
-  private List<AppConfig> appConfigs = new LinkedList<>();
+  private List<AppConfig> appConfigs;
 
   @Getter
   @Setter
@@ -30,22 +30,22 @@ public class WxCpProperties {
     /**
      * 设置企业微信应用的AgentId
      */
-    private Integer agentId = 1000002;
+    private Integer agentId;
 
     /**
      * 设置企业微信应用的Secret
      */
-    private String secret = "oCVhYswuy8D9dcsKsWFswA7M913oVezqp72y4uJ9R-I";
+    private String secret;
 
     /**
      * 设置企业微信应用的token
      */
-    private String token = "3hVOIUc7TAlPZ6pk46pblwbj3hl5Uz";
+    private String token;
 
     /**
      * 设置企业微信应用的EncodingAESKey
      */
-    private String aesKey = "MsqxNquQnFpaJ3bLoB43hRYhgYE6PkWnMfeUIjIcLjg";
+    private String aesKey;
 
   }
 

@@ -38,7 +38,7 @@ public class DataBaseScheduler {
             logger.error("failed to check db update");
         } catch (WxErrorException e) {
             e.printStackTrace();
-            logger.info("failed to push message");
+            logger.error("failed to push message");
         }
 
 

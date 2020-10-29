@@ -148,7 +148,7 @@ public class DbUtils {
         // 2、获取数据库连接
         conn = DriverManager.getConnection(url, username, password);
         // 3、获取数据库操作对象
-        stmt = conn.prepareStatement("insert into table subscriber values(user_name = ?, tag = ?)");
+        stmt = conn.prepareStatement("insert into subscriber values(?, ?)");
         stmt.setString(1, user_name);
         stmt.setString(2, tag);
         stmt.executeUpdate();
