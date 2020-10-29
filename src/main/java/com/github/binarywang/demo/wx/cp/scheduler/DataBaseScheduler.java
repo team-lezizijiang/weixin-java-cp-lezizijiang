@@ -18,7 +18,18 @@ import java.util.List;
 
 @Component
 public class DataBaseScheduler {
-    Long lastArticleID;
+    private static Long lastArticleID;
+
+    static {
+        try {
+            lastArticleID = DbUtils.getLastArticleID();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    } // 初始化为最新
+
     private static final Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
 
     @Scheduled(cron = "0 0 8-18 * * *")
@@ -29,7 +40,7 @@ public class DataBaseScheduler {
                 List<Long> newArticles = DbUtils.getNewArticleID(lastArticleID);
                 lastArticleID = DbUtils.getLastArticleID();
                 logger.info("new article detected, start push");
-                this.push(newArticles);
+                this.push(newArticles); // 检测到最新文章， 更新并向订阅用户推送
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
