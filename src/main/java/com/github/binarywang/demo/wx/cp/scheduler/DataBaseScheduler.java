@@ -10,6 +10,7 @@ import me.chanjar.weixin.cp.bean.WxCpMessage;
 import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @Component
 public class DataBaseScheduler {
     private static Long lastArticleID;
+    @Autowired private static WxCpProperties pr;
 
     static {
         try {
@@ -57,7 +59,6 @@ public class DataBaseScheduler {
 
     private void push(List<Long> newArticles) throws SQLException, ClassNotFoundException, WxErrorException {
         WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
-        WxCpProperties pr = new WxCpProperties();
         config.setCorpId(pr.getCorpId());      // 设置微信企业号的appid
         config.setCorpSecret(pr.getAppConfigs().get(0).getSecret());  // 设置微信企业号的app corpSecret
         config.setAgentId(pr.getAppConfigs().get(0).getAgentId());     // 设置微信企业号应用ID
