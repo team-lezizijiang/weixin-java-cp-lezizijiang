@@ -20,7 +20,7 @@ import java.util.List;
 @Component
 public class DataBaseScheduler {
     private static Long lastArticleID;
-    @Autowired private static WxCpProperties pr;
+    @Autowired private WxCpProperties pr;
 
     static {
         try {
