@@ -43,11 +43,13 @@ public class DataBaseScheduler {
                 lastArticleID = DbUtils.getLastArticleID();
                 logger.info("new article detected, start push");
                 this.push(newArticles); // 检测到最新文章， 更新并向订阅用户推送
+            } else {
+                logger.info("already up to date.");
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
             logger.error("failed to check db update");
         } catch (WxErrorException e) {
             e.printStackTrace();
