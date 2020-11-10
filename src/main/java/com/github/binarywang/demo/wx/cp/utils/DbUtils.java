@@ -151,6 +151,22 @@ public class DbUtils {
         return r;
     }
 
+    public static List<String> getAuthors(Long articleID) throws ClassNotFoundException, SQLException {
+        // 1、加载数据库驱动（ 成功加载后，会将Driver类的实例注册到DriverManager类中）
+        Class.forName(driver);
+        // 2、获取数据库连接
+        conn = DriverManager.getConnection(url, username, password);
+        // 3、获取数据库操作对象
+        stmt = conn.prepareStatement("select distinct author from author where articleID = ?");
+        // 4、定义操作的SQL语句
+        ArrayList<String> r = new ArrayList<>();
+        rs = stmt.executeQuery();
+        while(rs.next()){
+            r.add(rs.getString("author"));
+        }
+        return r;
+    }
+
     public static List<Long> getArticleIDByTag(String tag) throws ClassNotFoundException, SQLException {
         // 1、加载数据库驱动（ 成功加载后，会将Driver类的实例注册到DriverManager类中）
         Class.forName(driver);
@@ -160,6 +176,23 @@ public class DbUtils {
         stmt = conn.prepareStatement("select articleID,tag from tag where tag = ?");
         // 4、定义操作的SQL语句
         stmt.setString(1, tag);
+        ArrayList<Long> r = new ArrayList<>();
+        rs = stmt.executeQuery();
+        while(rs.next()){
+            r.add(rs.getLong("articleID"));
+        }
+        return r;
+    }
+
+    public static List<Long> getArticleIDByAuthor(String author) throws ClassNotFoundException, SQLException {
+        // 1、加载数据库驱动（ 成功加载后，会将Driver类的实例注册到DriverManager类中）
+        Class.forName(driver);
+        // 2、获取数据库连接
+        conn = DriverManager.getConnection(url, username, password);
+        // 3、获取数据库操作对象
+        stmt = conn.prepareStatement("select articleID, author from author where author = ?");
+        // 4、定义操作的SQL语句
+        stmt.setString(1, author);
         ArrayList<Long> r = new ArrayList<>();
         rs = stmt.executeQuery();
         while(rs.next()){
@@ -185,7 +218,7 @@ public class DbUtils {
         return r;
     }
 
-    public static void subscribe(String user_name, String tag) throws SQLException, ClassNotFoundException {
+    public static void subscribe(String user_name, String author) throws SQLException, ClassNotFoundException {
         // 1、加载数据库驱动（ 成功加载后，会将Driver类的实例注册到DriverManager类中）
         Class.forName(driver);
         // 2、获取数据库连接
@@ -193,7 +226,7 @@ public class DbUtils {
         // 3、获取数据库操作对象
         stmt = conn.prepareStatement("insert into subscriber values(?, ?)");
         stmt.setString(1, user_name);
-        stmt.setString(2, tag);
+        stmt.setString(2, author);
         stmt.executeUpdate();
 
     }
