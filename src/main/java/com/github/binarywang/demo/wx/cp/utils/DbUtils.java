@@ -109,6 +109,48 @@ public class DbUtils {
         return r;
     }
 
+    /**
+     * @return 所有的已知tag
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public static List<String> getTags() throws ClassNotFoundException, SQLException {
+        // 1、加载数据库驱动（ 成功加载后，会将Driver类的实例注册到DriverManager类中）
+        Class.forName(driver);
+        // 2、获取数据库连接
+        conn = DriverManager.getConnection(url, username, password);
+        // 3、获取数据库操作对象
+        stmt = conn.prepareStatement("select distinct tag from tag");
+        // 4、定义操作的SQL语句
+        ArrayList<String> r = new ArrayList<>();
+        rs = stmt.executeQuery();
+        while(rs.next()){
+            r.add(rs.getString("tag"));
+        }
+        return r;
+    }
+
+    /**
+     * @return 所有的已知author
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public static List<String> getAuthors() throws ClassNotFoundException, SQLException {
+        // 1、加载数据库驱动（ 成功加载后，会将Driver类的实例注册到DriverManager类中）
+        Class.forName(driver);
+        // 2、获取数据库连接
+        conn = DriverManager.getConnection(url, username, password);
+        // 3、获取数据库操作对象
+        stmt = conn.prepareStatement("select distinct author from article");
+        // 4、定义操作的SQL语句
+        ArrayList<String> r = new ArrayList<>();
+        rs = stmt.executeQuery();
+        while(rs.next()){
+            r.add(rs.getString("author"));
+        }
+        return r;
+    }
+
     public static List<Long> getArticleIDByTag(String tag) throws ClassNotFoundException, SQLException {
         // 1、加载数据库驱动（ 成功加载后，会将Driver类的实例注册到DriverManager类中）
         Class.forName(driver);
@@ -136,6 +178,7 @@ public class DbUtils {
         // 4、定义操作的SQL语句
         stmt.setString(1, title);
         ArrayList<Long> r = new ArrayList<>();
+        rs = stmt.executeQuery();
         while(rs.next()){
             r.add(rs.getLong("articleID"));
         }
@@ -155,3 +198,5 @@ public class DbUtils {
 
     }
 }
+
+// todo:　加入author 到 tag
