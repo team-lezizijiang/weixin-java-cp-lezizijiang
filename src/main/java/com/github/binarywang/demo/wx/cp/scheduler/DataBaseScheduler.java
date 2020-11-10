@@ -69,9 +69,9 @@ public class DataBaseScheduler {
 
         WxCpServiceImpl wxCpService = new WxCpServiceImpl();
         wxCpService.setWxCpConfigStorage(config);
-        for (Long articleID : newArticles) {
-            for (String tag : DbUtils.getTags(articleID)) {
-                for (String username : DbUtils.getSubscribers(tag)) {
+        for (Long articleID : newArticles) { // 新文章
+            for (String author : DbUtils.getAuthors(articleID)) { //文章标签
+                for (String username : DbUtils.getSubscribers(author)) { // 订阅用户
                     passiveSendMsg(WxCpConfiguration.getCpService(1000002), DbUtils.getContent(articleID), 1000002, username);
                 }
             }
