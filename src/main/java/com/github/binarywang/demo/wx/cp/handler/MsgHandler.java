@@ -65,7 +65,7 @@ public class MsgHandler extends AbstractHandler {
                 }
                 Long articleID = 0L;
                 for (int i = 1; i < lst.length; i++) {
-                    DbUtils.getArticleIDByTitle(lst[i]);
+                    articleID = DbUtils.getArticleIDByTitle(lst[i]).get(0);
                     stringBuffer.append(DbUtils.getContent(articleID));
                 }
             }else{
