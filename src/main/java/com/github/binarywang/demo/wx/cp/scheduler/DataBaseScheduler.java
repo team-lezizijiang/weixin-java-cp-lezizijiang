@@ -78,7 +78,6 @@ public class DataBaseScheduler {
         }
     }
 
-
     public void passiveSendMsg(WxCpService wxCpService, String content, int agentID, String UserName) throws WxErrorException {
         WxCpMessage wxCpMessage =
             WxCpMessage

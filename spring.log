@@ -1,0 +1,6 @@
+2020-11-10 23:46:01.654  INFO 12204 --- [main] c.g.b.demo.wx.cp.WxCpDemoApplication     : Starting WxCpDemoApplication on DESKTOP-JHACDPK with PID 12204 (C:\Users\乐滋滋酱\IdeaProjects\weixin-java-cp-lezizijiang\target\classes started by 乐滋滋酱 in C:\Users\乐滋滋酱\IdeaProjects\weixin-java-cp-lezizijiang)
+2020-11-10 23:46:01.664 DEBUG 12204 --- [main] c.g.b.demo.wx.cp.WxCpDemoApplication     : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2020-11-10 23:46:01.666  INFO 12204 --- [main] c.g.b.demo.wx.cp.WxCpDemoApplication     : No active profile set, falling back to default profiles: default
+2020-11-10 23:46:03.914  INFO 12204 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8021 (http)
+2020-11-10 23:46:03.944  INFO 12204 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-11-10 23:46:03.945  INFO 12204 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]

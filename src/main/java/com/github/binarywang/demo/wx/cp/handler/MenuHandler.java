@@ -67,7 +67,7 @@ public class MenuHandler extends AbstractHandler {
       }
 
     if (MenuButtonType.VIEW.equals(wxMessage.getEvent())) {
-      return null;
+        return null;
     }
 
     return WxCpXmlOutMessage.TEXT().content(msg.toString())
