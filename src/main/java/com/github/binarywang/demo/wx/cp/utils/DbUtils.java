@@ -141,7 +141,7 @@ public class DbUtils {
         // 2、获取数据库连接
         conn = DriverManager.getConnection(url, username, password);
         // 3、获取数据库操作对象
-        stmt = conn.prepareStatement("select distinct author from article");
+        stmt = conn.prepareStatement("select distinct author from author");
         // 4、定义操作的SQL语句
         ArrayList<String> r = new ArrayList<>();
         rs = stmt.executeQuery();
