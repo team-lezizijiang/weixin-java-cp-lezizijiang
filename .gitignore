@@ -5,3 +5,5 @@
 application.yml
 /.idea/
 *.iml
+/spring.log
+/spring.log.2020-11-04.0.gz
