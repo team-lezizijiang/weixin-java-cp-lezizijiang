@@ -73,7 +73,7 @@ public class DataBaseScheduler {
         for (Long articleID : newArticles) { // 新文章
             for (String author : DbUtils.getAuthors(articleID)) { //文章标签
                 for (String username : DbUtils.getSubscribers(author)) { // 订阅用户
-                    passiveSendMsg(WxCpConfiguration.getCpService(1000002), author, (long) 1000002, username); //主动发送卡片消息，展示
+                    passiveSendMsg(WxCpConfiguration.getCpService(1000002), author, articleID, username); //主动发送卡片消息，展示
                 }
             }
         }
