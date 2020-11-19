@@ -22,10 +22,11 @@ public class TagMenu {
         "	{ \n" +
         "		\"name\":\" 菜单 \",\n" +
         "		\"sub_button\":[\n" +
+
         "		{	\n" +
         "			\"type\":\"click\",\n" +
-        "			\"name\":\" 标签群 \",\n" +
-        "			\"key\":\"TAGS\"\n" +
+        "			\"name\":\" 主动消息测试 \",\n" +
+        "			\"key\":\"TEST\"\n" +
         "		},\n" +
         "		{\n" +
         "			\"type\":\"click\",\n" +

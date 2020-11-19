@@ -62,6 +62,15 @@ public class MenuHandler extends AbstractHandler {
               }
               break;
           }
+          case("TEST"):{
+              try{
+                  msg = new StringBuilder("https://message.lezizijiang.cn/content/?articleID=" + getLastArticleID());
+              } catch (SQLException | ClassNotFoundException throwables) {
+                  throwables.printStackTrace();
+                  logger.error(throwables.getMessage());
+              }
+              break;
+          }
           default:
               throw new IllegalStateException("Unexpected value: " + key);
       }
