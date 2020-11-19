@@ -7,12 +7,12 @@ import me.chanjar.weixin.cp.bean.WxCpMessage;
 import java.sql.SQLException;
 
 public class MyTextCardBuilder {
-    public WxCpMessage buildTestCardMsg(String title, String userName, Long articleID) throws SQLException, ClassNotFoundException {
+    public WxCpMessage buildTestCardMsg(String title, String userName, String description, String url, String btn) throws SQLException, ClassNotFoundException {
         return WxCpMessage.TEXTCARD()
         .title(title)
-        .description(DbUtils.getTitle(articleID))
-        .btnTxt("更多")
-        .url("https://message.lezizijiang.cn/content/?articleID=" + articleID)
+        .description(description)
+        .btnTxt(btn)
+        .url(url)
         .toUser(userName)
         .build();
     }

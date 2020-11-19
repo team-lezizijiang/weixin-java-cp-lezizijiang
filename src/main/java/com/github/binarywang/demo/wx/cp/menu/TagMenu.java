@@ -22,11 +22,10 @@ public class TagMenu {
         "	{ \n" +
         "		\"name\":\" 菜单 \",\n" +
         "		\"sub_button\":[\n" +
-
         "		{	\n" +
         "			\"type\":\"click\",\n" +
-        "			\"name\":\" 主动消息测试 \",\n" +
-        "			\"key\":\"TEST\"\n" +
+        "			\"name\":\" 标签群 \",\n" +
+        "			\"key\":\"TAGS\"\n" +
         "		},\n" +
         "		{\n" +
         "			\"type\":\"click\",\n" +
@@ -34,7 +33,7 @@ public class TagMenu {
         "			\"key\":\"NEWEST\"\n" +
         "		}]\n" +
         "   }]\n" +
-        "}}";; // 设置自定义菜单
+        "}}"; // 设置自定义菜单
     WxMenu menu = WxMenu.fromJson(json);
 
     @Autowired

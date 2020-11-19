@@ -73,7 +73,7 @@ public class DataBaseScheduler {
         for (Long articleID : newArticles) { // 新文章
             for (String author : DbUtils.getAuthors(articleID)) { //文章标签
                 for (String username : DbUtils.getSubscribers(author)) { // 订阅用户
-                    passiveSendMsg(WxCpConfiguration.getCpService(1000002), author + "更新", (long) 1000002, username);
+                    passiveSendMsg(WxCpConfiguration.getCpService(1000002), author, (long) 1000002, username); //主动发送卡片消息，展示
                 }
             }
         }
@@ -81,7 +81,7 @@ public class DataBaseScheduler {
 
     public void passiveSendMsg(WxCpService wxCpService, String title, Long articleID, String UserName) throws WxErrorException, SQLException, ClassNotFoundException {
         WxCpMessage wxCpMessage =
-            new MyTextCardBuilder().buildTestCardMsg(title,UserName, articleID);
+            new MyTextCardBuilder().buildTestCardMsg(title, UserName, DbUtils.getTitle(articleID), "https://message.lezizijiang.cn/content/?articleID=" + articleID, "全文");
         wxCpService.messageSend(wxCpMessage);
     }
 }

@@ -3,9 +3,13 @@ package com.github.binarywang.demo.wx.cp.handler;
 import java.sql.SQLException;
 import java.util.Map;
 
+import com.github.binarywang.demo.wx.cp.builder.MyTextCardBuilder;
 import com.github.binarywang.demo.wx.cp.menu.TagMenu;
 import com.github.binarywang.demo.wx.cp.scheduler.DataBaseScheduler;
+import com.github.binarywang.demo.wx.cp.utils.DbUtils;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
+import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.cp.bean.WxCpMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,19 +59,11 @@ public class MenuHandler extends AbstractHandler {
           }
           case("NEWEST"):{
               try {
-                  msg = new StringBuilder(getTitle(getLastArticleID()));
-              } catch (ClassNotFoundException | SQLException e) {
+                  passiveSendMsg(cpService,getLastArticleID(), wxMessage.getFromUserName());
+                  msg = new StringBuilder();
+              } catch (ClassNotFoundException | SQLException | WxErrorException e) {
                   e.printStackTrace();
                   logger.error(e.getMessage());
-              }
-              break;
-          }
-          case("TEST"):{
-              try{
-                  msg = new StringBuilder("https://message.lezizijiang.cn/content/?articleID=" + getLastArticleID());
-              } catch (SQLException | ClassNotFoundException throwables) {
-                  throwables.printStackTrace();
-                  logger.error(throwables.getMessage());
               }
               break;
           }
@@ -83,5 +79,11 @@ public class MenuHandler extends AbstractHandler {
         .fromUser(wxMessage.getToUserName()).toUser(wxMessage.getFromUserName())
         .build();
   }
+
+    public void passiveSendMsg(WxCpService wxCpService, Long articleID, String UserName) throws WxErrorException, SQLException, ClassNotFoundException {
+        WxCpMessage wxCpMessage =
+            new MyTextCardBuilder().buildTestCardMsg(getAuthors(articleID).get(0), UserName, DbUtils.getTitle(articleID), "https://message.lezizijiang.cn/content/?articleID=" + articleID, "全文");
+        wxCpService.messageSend(wxCpMessage);
+    }
 
 }

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
 
+/**
+ * 简单使用网页展示通知全文
+ */
 @RestController
 @Slf4j
 public class ArticleContentController {
@@ -22,6 +25,7 @@ public class ArticleContentController {
         String content;
         try{
             content = DbUtils.getContent(article_id);
+            content = content.replace("\n", "<br>"); //格式化
         } catch (SQLException | ClassNotFoundException e){
             logger.error(e.getLocalizedMessage());
             content = e.getMessage();
