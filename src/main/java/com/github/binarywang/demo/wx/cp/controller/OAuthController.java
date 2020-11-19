@@ -18,24 +18,20 @@ public class OAuthController{
     private final Logger logger = LoggerFactory.getLogger(WxPortalController.class);
 
     /**
-     * 第三方登录跳转
+     * 第三方登录url
      *
      * */
     @RequestMapping("/render/{source}")
     public void renderAuth(@PathVariable("source") String source, HttpServletResponse response) throws IOException{
-        wxCpService.getOauth2Service().buildAuthorizationUrl("www.lezizijiang.com", "200");
+        wxCpService.getOauth2Service().buildAuthorizationUrl("www.lezizijiang.com/render ", "200");
     }
     @RequestMapping("/callback/{source}")
     public String[] getAuthInfo(@PathVariable("source") String source, @RequestParam("code") String code) throws WxErrorException {
-        WxCpOauth2UserInfo wxCpOauth2UserInfo= wxCpService.getOauth2Service().getUserInfo(code);
+        WxCpOauth2UserInfo wxCpOauth2UserInfo = wxCpService.getOauth2Service().getUserInfo(code);
         String[] res = new String[3];
         res[0] = wxCpOauth2UserInfo.getUserId();
         res[1] = wxCpOauth2UserInfo.getDeviceId();
-        res[2] = wxCpOauth2UserInfo.getUserTicket();
+        res[2] = wxCpOauth2UserInfo.getOpenId();
+        return res;
     }
-    @RequestMapping("/avatar")
-    public String avatar(){
-
-    }
-
 }

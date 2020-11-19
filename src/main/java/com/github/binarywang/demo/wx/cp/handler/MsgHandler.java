@@ -76,6 +76,5 @@ public class MsgHandler extends AbstractHandler {
         }
         content = stringBuffer.toString();
         return new TextBuilder().build(content, wxMessage, cpService);
-
     }
 }
