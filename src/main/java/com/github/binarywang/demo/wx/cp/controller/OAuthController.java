@@ -6,25 +6,29 @@ import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.bean.WxCpOauth2UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
 @Slf4j
-public class OAuthController{
-    WxCpService wxCpService;
+public class OAuthController {
     private final Logger logger = LoggerFactory.getLogger(WxPortalController.class);
+    WxCpService wxCpService;
 
     /**
      * 第三方登录url
-     *
-     * */
+     */
     @RequestMapping("/render/{source}")
-    public void renderAuth(@PathVariable("source") String source, HttpServletResponse response) throws IOException{
+    public void renderAuth(@PathVariable("source") String source, HttpServletResponse response) throws IOException {
         wxCpService.getOauth2Service().buildAuthorizationUrl("www.lezizijiang.com/render ", "200");
     }
+
     @RequestMapping("/callback/{source}")
     public String[] getAuthInfo(@PathVariable("source") String source, @RequestParam("code") String code) throws WxErrorException {
         WxCpOauth2UserInfo wxCpOauth2UserInfo = wxCpService.getOauth2Service().getUserInfo(code);

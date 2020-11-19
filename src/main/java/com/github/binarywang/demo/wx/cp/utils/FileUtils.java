@@ -1,22 +1,23 @@
 package com.github.binarywang.demo.wx.cp.utils;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
-import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.cp.api.WxCpService;
-import me.chanjar.weixin.cp.bean.WxCpMessage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.itextpdf.text.*;
+
 import java.io.*;
 
 public class FileUtils {
-    private static final String base_path = "";
     public static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
-    public static String createDocx(String content, String articleID){
-        File file = new File(base_path+articleID+".docx");
+    private static final String base_path = "";
+
+    public static String createDocx(String content, String articleID) {
+        File file = new File(base_path + articleID + ".docx");
         XWPFDocument xwpfDocument = new XWPFDocument();
-        try{
+        try {
             if (!file.exists()) {
                 if (file.createNewFile()) {
                     BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
@@ -26,17 +27,19 @@ public class FileUtils {
                 }
             }
             return base_path + articleID + ".txt";
-        }catch(IOException e){
-            logger.info("use "+ articleID + ".docx");
+        } catch (IOException e) {
+            logger.info("use " + articleID + ".docx");
         }
         return null;
     }
-    public static String createPdf(String content, String articleID){
+
+    public static File createPdf(String content, String articleID) {
         Document document = new Document(PageSize.A4);
-        try{
-            File file = new File(base_path+articleID+".pdf");
-            if(!file.exists()){
-                if(file.createNewFile()){
+        File file = null;
+        try {
+            file = new File(base_path + articleID + ".pdf");
+            if (!file.exists()) {
+                if (file.createNewFile()) {
                     PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(file));
                     // 3.打开文档
                     document.open();
@@ -51,13 +54,14 @@ public class FileUtils {
                     logger.info("use" + articleID + ".pdf success");
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return base_path + articleID + ".pdf";
+        return file;
     }
-    public static String createTxt(String content, String articleID){
-        File file = new File(base_path+articleID+".txt");
+
+    public static File createTxt(String content, String articleID) {
+        File file = new File(base_path + articleID + ".txt");
         try {
             if (!file.exists()) {
                 if (file.createNewFile()) {
@@ -67,24 +71,9 @@ public class FileUtils {
                     bufferedWriter.flush();
                 }
             }
-            return base_path + articleID + ".txt";
         } catch (IOException e) {
             logger.info("use" + articleID + ".txt failed");
         }
-        return base_path + articleID + ".txt";
-    }
-    public void sendFileMessage(String mediaType, String fileName, WxCpService wxCpService
-    , String content, int agentID, String UserName) throws WxErrorException {
-        File file = new File(fileName);
-        WxMediaUploadResult res = wxCpService.getMediaService().upload(mediaType, file);
-        res.getType();
-        res.getCreatedAt();
-        WxCpMessage wxCpMessage =
-            WxCpMessage.FILE()
-                .agentId(agentID)
-                .toUser(UserName)
-                .mediaId(res.getMediaId())
-                .build();
-        wxCpService.messageSend(wxCpMessage);
+        return file;
     }
 }

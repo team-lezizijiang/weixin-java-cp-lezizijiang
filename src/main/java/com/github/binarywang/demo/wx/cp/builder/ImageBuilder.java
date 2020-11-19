@@ -7,19 +7,17 @@ import me.chanjar.weixin.cp.bean.WxCpXmlOutMessage;
 
 
 /**
- *  @author Binary Wang(https://github.com/binarywang)
+ * @author Binary Wang(https://github.com/binarywang)
  */
 public class ImageBuilder extends AbstractBuilder {
 
-  @Override
-  public WxCpXmlOutMessage build(String content, WxCpXmlMessage wxMessage,
-                                 WxCpService service) {
+    @Override
+    public WxCpXmlOutMessage build(String content, WxCpXmlMessage wxMessage,
+                                   WxCpService service) {
 
-    WxCpXmlOutImageMessage m = WxCpXmlOutMessage.IMAGE().mediaId(content)
-        .fromUser(wxMessage.getToUserName()).toUser(wxMessage.getFromUserName())
-        .build();
-
-    return m;
-  }
+        return WxCpXmlOutMessage.IMAGE().mediaId(content)
+            .fromUser(wxMessage.getToUserName()).toUser(wxMessage.getFromUserName())
+            .build();
+    }
 
 }

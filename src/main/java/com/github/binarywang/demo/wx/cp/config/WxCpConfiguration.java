@@ -1,30 +1,21 @@
 package com.github.binarywang.demo.wx.cp.config;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-
-import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
-import me.chanjar.weixin.cp.constant.WxCpConsts;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-import com.github.binarywang.demo.wx.cp.handler.ContactChangeHandler;
-import com.github.binarywang.demo.wx.cp.handler.EnterAgentHandler;
-import com.github.binarywang.demo.wx.cp.handler.LocationHandler;
-import com.github.binarywang.demo.wx.cp.handler.LogHandler;
-import com.github.binarywang.demo.wx.cp.handler.MenuHandler;
-import com.github.binarywang.demo.wx.cp.handler.MsgHandler;
-import com.github.binarywang.demo.wx.cp.handler.NullHandler;
-import com.github.binarywang.demo.wx.cp.handler.SubscribeHandler;
-import com.github.binarywang.demo.wx.cp.handler.UnsubscribeHandler;
+import com.github.binarywang.demo.wx.cp.handler.*;
 import com.google.common.collect.Maps;
 import lombok.val;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
+import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
+import me.chanjar.weixin.cp.constant.WxCpConsts;
 import me.chanjar.weixin.cp.message.WxCpMessageRouter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Binary Wang(https://github.com/binarywang)
@@ -32,18 +23,16 @@ import me.chanjar.weixin.cp.message.WxCpMessageRouter;
 @Configuration
 @EnableConfigurationProperties(WxCpProperties.class)
 public class WxCpConfiguration {
-    private LogHandler logHandler;
-    private NullHandler nullHandler;
-    private LocationHandler locationHandler;
-    private MenuHandler menuHandler;
-    private MsgHandler msgHandler;
-    private UnsubscribeHandler unsubscribeHandler;
-    private SubscribeHandler subscribeHandler;
-
-    private WxCpProperties properties;
-
-    private static Map<Integer, WxCpMessageRouter> routers = Maps.newHashMap();
+    private static final Map<Integer, WxCpMessageRouter> routers = Maps.newHashMap();
     private static Map<Integer, WxCpService> cpServices = Maps.newHashMap();
+    private final LogHandler logHandler;
+    private final NullHandler nullHandler;
+    private final LocationHandler locationHandler;
+    private final MenuHandler menuHandler;
+    private final MsgHandler msgHandler;
+    private final UnsubscribeHandler unsubscribeHandler;
+    private final SubscribeHandler subscribeHandler;
+    private final WxCpProperties properties;
 
     @Autowired
     public WxCpConfiguration(LogHandler logHandler, NullHandler nullHandler, LocationHandler locationHandler,

@@ -1,13 +1,13 @@
 package com.github.binarywang.demo.wx.cp.handler;
 
-import java.util.Map;
-
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.bean.WxCpXmlMessage;
 import me.chanjar.weixin.cp.bean.WxCpXmlOutMessage;
+
+import java.util.Map;
 
 /**
  * <pre>

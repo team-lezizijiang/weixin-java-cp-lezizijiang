@@ -2,8 +2,6 @@ package com.github.binarywang.demo.wx.cp.handler;
 
 import com.github.binarywang.demo.wx.cp.builder.MyTextCardBuilder;
 import com.github.binarywang.demo.wx.cp.builder.TextBuilder;
-import java.sql.*;
-
 import com.github.binarywang.demo.wx.cp.utils.DbUtils;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -13,6 +11,7 @@ import me.chanjar.weixin.cp.bean.WxCpXmlMessage;
 import me.chanjar.weixin.cp.bean.WxCpXmlOutMessage;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 

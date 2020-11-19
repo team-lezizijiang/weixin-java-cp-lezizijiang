@@ -41,7 +41,7 @@ public class DbUtils {
         stmt.setLong(1, old);
         ArrayList<Long> r = new ArrayList<>();
         rs = stmt.executeQuery();
-        while (rs.next()){
+        while (rs.next()) {
             r.add(rs.getLong("articleID"));
         }
         return r;
@@ -86,7 +86,7 @@ public class DbUtils {
         stmt.setString(1, tag);
         ArrayList<String> r = new ArrayList<>();
         rs = stmt.executeQuery();
-        while(rs.next()){
+        while (rs.next()) {
             r.add(rs.getString("user_name"));
         }
         return r;
@@ -103,7 +103,7 @@ public class DbUtils {
         stmt.setLong(1, articleID);
         ArrayList<String> r = new ArrayList<>();
         rs = stmt.executeQuery();
-        while(rs.next()){
+        while (rs.next()) {
             r.add(rs.getString("tag"));
         }
         return r;
@@ -124,7 +124,7 @@ public class DbUtils {
         // 4、定义操作的SQL语句
         ArrayList<String> r = new ArrayList<>();
         rs = stmt.executeQuery();
-        while(rs.next()){
+        while (rs.next()) {
             r.add(rs.getString("tag"));
         }
         return r;
@@ -145,7 +145,7 @@ public class DbUtils {
         // 4、定义操作的SQL语句
         ArrayList<String> r = new ArrayList<>();
         rs = stmt.executeQuery();
-        while(rs.next()){
+        while (rs.next()) {
             r.add(rs.getString("author"));
         }
         return r;
@@ -162,7 +162,7 @@ public class DbUtils {
         // 4、定义操作的SQL语句
         ArrayList<String> r = new ArrayList<>();
         rs = stmt.executeQuery();
-        while(rs.next()){
+        while (rs.next()) {
             r.add(rs.getString("author"));
         }
         return r;
@@ -179,7 +179,7 @@ public class DbUtils {
         stmt.setString(1, tag);
         ArrayList<Long> r = new ArrayList<>();
         rs = stmt.executeQuery();
-        while(rs.next()){
+        while (rs.next()) {
             r.add(rs.getLong("articleID"));
         }
         return r;
@@ -196,7 +196,7 @@ public class DbUtils {
         stmt.setString(1, author);
         ArrayList<Long> r = new ArrayList<>();
         rs = stmt.executeQuery();
-        while(rs.next()){
+        while (rs.next()) {
             r.add(rs.getLong("articleID"));
         }
         return r;
@@ -213,7 +213,7 @@ public class DbUtils {
         stmt.setString(1, title);
         ArrayList<Long> r = new ArrayList<>();
         rs = stmt.executeQuery();
-        while(rs.next()){
+        while (rs.next()) {
             r.add(rs.getLong("articleID"));
         }
         return r;

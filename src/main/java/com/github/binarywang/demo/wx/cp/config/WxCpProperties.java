@@ -1,14 +1,11 @@
 package com.github.binarywang.demo.wx.cp.config;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import com.github.binarywang.demo.wx.cp.utils.JsonUtils;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
 
 /**
  * @author Binary Wang(https://github.com/binarywang)
@@ -17,40 +14,40 @@ import lombok.Setter;
 @Setter
 @ConfigurationProperties(prefix = "wechat.cp")
 public class WxCpProperties {
-  /**
-   * 设置企业微信的corpId
-   */
-  private String corpId;
-
-  private List<AppConfig> appConfigs;
-
-  @Getter
-  @Setter
-  public static class AppConfig {
     /**
-     * 设置企业微信应用的AgentId
+     * 设置企业微信的corpId
      */
-    private Integer agentId;
+    private String corpId;
 
-    /**
-     * 设置企业微信应用的Secret
-     */
-    private String secret;
+    private List<AppConfig> appConfigs;
 
-    /**
-     * 设置企业微信应用的token
-     */
-    private String token;
+    @Override
+    public String toString() {
+        return JsonUtils.toJson(this);
+    }
 
-    /**
-     * 设置企业微信应用的EncodingAESKey
-     */
-    private String aesKey;
+    @Getter
+    @Setter
+    public static class AppConfig {
+        /**
+         * 设置企业微信应用的AgentId
+         */
+        private Integer agentId;
 
-  }
+        /**
+         * 设置企业微信应用的Secret
+         */
+        private String secret;
 
-  @Override
-  public String toString() {
-    return JsonUtils.toJson(this);
-  }
+        /**
+         * 设置企业微信应用的token
+         */
+        private String token;
+
+        /**
+         * 设置企业微信应用的EncodingAESKey
+         */
+        private String aesKey;
+
+    }
 }

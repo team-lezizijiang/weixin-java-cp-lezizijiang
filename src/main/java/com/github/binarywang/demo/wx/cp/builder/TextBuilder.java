@@ -6,17 +6,16 @@ import me.chanjar.weixin.cp.bean.WxCpXmlOutMessage;
 import me.chanjar.weixin.cp.bean.WxCpXmlOutTextMessage;
 
 /**
- *  @author Binary Wang(https://github.com/binarywang)
+ * @author Binary Wang(https://github.com/binarywang)
  */
 public class TextBuilder extends AbstractBuilder {
 
-  @Override
-  public WxCpXmlOutMessage build(String content, WxCpXmlMessage wxMessage,
-                                 WxCpService service) {
-    WxCpXmlOutTextMessage m = WxCpXmlOutMessage.TEXT().content(content)
-        .fromUser(wxMessage.getToUserName()).toUser(wxMessage.getFromUserName())
-        .build();
-    return m;
-  }
+    @Override
+    public WxCpXmlOutMessage build(String content, WxCpXmlMessage wxMessage,
+                                   WxCpService service) {
+        return WxCpXmlOutMessage.TEXT().content(content)
+            .fromUser(wxMessage.getToUserName()).toUser(wxMessage.getFromUserName())
+            .build();
+    }
 
 }

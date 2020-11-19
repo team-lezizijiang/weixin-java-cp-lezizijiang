@@ -23,10 +23,10 @@ public class ArticleContentController {
     public String showContent(@RequestParam("articleID") String articleID) {
         Long article_id = Long.parseLong(articleID);
         String content;
-        try{
+        try {
             content = DbUtils.getContent(article_id);
             content = content.replace("\n", "<br>"); //格式化
-        } catch (SQLException | ClassNotFoundException e){
+        } catch (SQLException | ClassNotFoundException e) {
             logger.error(e.getLocalizedMessage());
             content = e.getMessage();
         }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TagMenu {
-    String json =  "{\"menu\": {\n" +
+    String json = "{\"menu\": {\n" +
         " 	\"button\":[\n" +
         " 	{	\n" +
         "    	\"type\":\"click\",\n" +

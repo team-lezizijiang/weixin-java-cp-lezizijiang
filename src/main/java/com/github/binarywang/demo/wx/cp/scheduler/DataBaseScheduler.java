@@ -20,20 +20,20 @@ import java.util.List;
 
 @Component
 public class DataBaseScheduler {
+    private static final Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
     private static Long lastArticleID;
-    @Autowired private WxCpProperties pr;
 
     static {
         try {
             lastArticleID = DbUtils.getLastArticleID();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            logger.error(e.getMessage());
         }
     } // 初始化为最新
 
-    private static final Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
+    @Autowired
+    private WxCpProperties pr;
 
     @Scheduled(cron = "0 0 8-18 * * *")
     public void update() {
