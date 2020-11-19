@@ -86,7 +86,6 @@ public class MsgHandler extends AbstractHandler {
         }
         content = stringBuffer.toString();
         return new TextBuilder().build(content, wxMessage, cpService);
-
     }
 
     public void passiveSendMsg(WxCpService wxCpService, String title, Long articleID, String UserName) throws WxErrorException, SQLException, ClassNotFoundException {

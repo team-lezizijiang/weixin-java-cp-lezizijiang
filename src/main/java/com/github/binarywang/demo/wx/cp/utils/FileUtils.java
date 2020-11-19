@@ -1,5 +1,9 @@
 package com.github.binarywang.demo.wx.cp.utils;
 import com.itextpdf.text.pdf.PdfWriter;
+import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
+import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.cp.api.WxCpService;
+import me.chanjar.weixin.cp.bean.WxCpMessage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +71,20 @@ public class FileUtils {
         } catch (IOException e) {
             logger.info("use" + articleID + ".txt failed");
         }
-        return null;
+        return base_path + articleID + ".txt";
+    }
+    public void sendFileMessage(String mediaType, String fileName, WxCpService wxCpService
+    , String content, int agentID, String UserName) throws WxErrorException {
+        File file = new File(fileName);
+        WxMediaUploadResult res = wxCpService.getMediaService().upload(mediaType, file);
+        res.getType();
+        res.getCreatedAt();
+        WxCpMessage wxCpMessage =
+            WxCpMessage.FILE()
+                .agentId(agentID)
+                .toUser(UserName)
+                .mediaId(res.getMediaId())
+                .build();
+        wxCpService.messageSend(wxCpMessage);
     }
 }
