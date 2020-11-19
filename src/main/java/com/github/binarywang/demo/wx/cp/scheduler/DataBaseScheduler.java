@@ -1,5 +1,6 @@
 package com.github.binarywang.demo.wx.cp.scheduler;
 
+import com.github.binarywang.demo.wx.cp.builder.MyTextCardBuilder;
 import com.github.binarywang.demo.wx.cp.config.WxCpConfiguration;
 import com.github.binarywang.demo.wx.cp.config.WxCpProperties;
 import com.github.binarywang.demo.wx.cp.utils.DbUtils;
@@ -72,20 +73,15 @@ public class DataBaseScheduler {
         for (Long articleID : newArticles) { // 新文章
             for (String author : DbUtils.getAuthors(articleID)) { //文章标签
                 for (String username : DbUtils.getSubscribers(author)) { // 订阅用户
-                    passiveSendMsg(WxCpConfiguration.getCpService(1000002), DbUtils.getContent(articleID), 1000002, username);
+                    passiveSendMsg(WxCpConfiguration.getCpService(1000002), author + "更新", (long) 1000002, username);
                 }
             }
         }
     }
 
-    public void passiveSendMsg(WxCpService wxCpService, String content, int agentID, String UserName) throws WxErrorException {
+    public void passiveSendMsg(WxCpService wxCpService, String title, Long articleID, String UserName) throws WxErrorException, SQLException, ClassNotFoundException {
         WxCpMessage wxCpMessage =
-            WxCpMessage
-                .TEXT()
-                .agentId(agentID)
-                .toUser(UserName)
-                .content(content)
-                .build();
+            new MyTextCardBuilder().buildTestCardMsg(title,UserName, articleID);
         wxCpService.messageSend(wxCpMessage);
     }
 }

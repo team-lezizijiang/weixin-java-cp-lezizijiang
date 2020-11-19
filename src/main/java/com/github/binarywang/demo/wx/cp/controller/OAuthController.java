@@ -32,6 +32,7 @@ public class OAuthController{
         res[0] = wxCpOauth2UserInfo.getUserId();
         res[1] = wxCpOauth2UserInfo.getDeviceId();
         res[2] = wxCpOauth2UserInfo.getUserTicket();
+        return res;
     }
     @RequestMapping("/avatar")
     public String avatar(){
