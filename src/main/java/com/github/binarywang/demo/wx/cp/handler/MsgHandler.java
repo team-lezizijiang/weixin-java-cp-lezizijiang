@@ -27,7 +27,6 @@ public class MsgHandler extends AbstractHandler {
     public WxCpXmlOutMessage handle(WxCpXmlMessage wxMessage, Map<String, Object> context, WxCpService cpService,
                                     WxSessionManager sessionManager) {
         final String msgType = wxMessage.getMsgType();
-        //TODO 组装回复消息
         String contents = wxMessage.getContent();
         String FromUserName = wxMessage.getFromUserName();
 

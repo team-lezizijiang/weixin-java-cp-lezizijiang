@@ -47,7 +47,7 @@ public class MenuHandler extends AbstractHandler {
             case ("TAGS"): {
                 try {
                     for (String tag : getAuthors()) {
-                        msg.append(tag).append("  ");// todo:　消息过长无法发送
+                        msg.append(tag).append("  ");
                     }
                 } catch (SQLException | ClassNotFoundException e) {
                     e.printStackTrace();
