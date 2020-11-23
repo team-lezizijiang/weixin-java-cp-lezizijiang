@@ -11,23 +11,31 @@ import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
 
-@RestController
+@Controller
 @Slf4j
 public class TagSubscribeController {
     public static final Logger logger = LoggerFactory.getLogger(ArticleContentController.class);
-    @Autowired private WxCpProperties pr;
-
+    @Autowired
+    private WxCpProperties pr;
 
 
     @RequestMapping("/tags")
-    public String showTags(@RequestParam("code") String code, @RequestParam("state") int state) {
+    public String showTags(@RequestParam("code") String code, @RequestParam("state") int state, Model model) throws SQLException, ClassNotFoundException {
+        String username = getUsername(code);
+        model.addAttribute("username", username);
+        model.addAttribute("AllTags", DbUtils.getAuthors());
+        return "tags";
+    } // todo: 使用checkbox的tag订阅器
+
+    private String getUsername(String code) {
         WxCpService service;
         WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
         config.setCorpId(pr.getCorpId());      // 设置微信企业号的appid
@@ -51,6 +59,6 @@ public class TagSubscribeController {
         res[1] = wxCpOauth2UserInfo.getDeviceId();
         res[2] = wxCpOauth2UserInfo.getOpenId();
         return res[0];
-    } // todo: 使用checkbox的tag订阅器
+    }
 
 }
