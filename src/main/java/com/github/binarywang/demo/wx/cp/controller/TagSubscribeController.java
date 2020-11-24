@@ -92,16 +92,17 @@ public class TagSubscribeController {
     }
 
     // 注解可能存在问题，httpRequest发送信息内容不知道什么格式
-    @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
-    public String dealWithSubscribe(@RequestParam(value = "apiContentStr") String apiContentStr) throws SQLException, ClassNotFoundException {
+    @RequestMapping(value = "/subscribe", method = RequestMethod.PUT)
+    public String dealWithSubscribe(String apiContentStr) throws SQLException, ClassNotFoundException {
         String[] tagList = apiContentStr.split(",");
         String userName = tagList[0];
-        if (tagList.length <= 1) {
-            return "fail";
-        }
         for (int i = 1; i < tagList.length; i++) {
             DbUtils.subscribe(userName, tagList[i]);
         }
+        return "redirect:/success";
+    }
+    @RequestMapping("/success")
+    public String success(){
         return "success";
     }
 }
