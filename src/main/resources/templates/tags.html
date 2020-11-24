@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{https://res.wx.qq.com/open/libs/weui/1.1.2/weui-for-work.css}">
 </head>
 <body class="weui-page">
-<h1 th:text="'Hello, ' + ${username} + '!'" class="page__title"></h1>
+<h1 th:id='userName' th:text="'Hello, ' + ${username} + '!'" class="page__title"></h1>
 <hr class="layui-bg-blue">
 <form class="weui-form">
     <div class="weui-form__control-area">
@@ -16,7 +16,7 @@
             <div class="weui-cells weui-cells_checkbox">
                 <label class="weui-cell weui-cell_active weui-check__label" th:each="tag : ${AllTags}" th:for="${#ids.next('tag')}">
                     <div class="weui-cell__hd">
-                        <input type="checkbox" th:id="${#ids.seq('tag')}" th:value="${tag.author}" th:checked="${tag.isChecked}" class="weui-check"/>
+                        <input type="checkbox" th:name="Tag" th:id="${#ids.seq('tag')}" th:value="${tag.author}" th:checked="${tag.isChecked}" class="weui-check"/>
                         <i class="weui-icon-checked"></i>
                     </div>
                     <div class="weui-cell__bd">
@@ -31,19 +31,19 @@
         <input class="b_button" type="submit" value="提交" />
         <input class="b_button" type="reset" value="重置" />
     </div>
-    <div class="weui-form__tips-area">
-        <p class="weui-form__tips">
-            点击下一步即表示<a href="javascript:">同意用户协议</a>
-        </p>
-    </div>
+<!--    <div class="weui-form__tips-area">-->
+<!--        <p class="weui-form__tips">-->
+<!--            点击下一步即表示<a href="javascript:">同意用户协议</a>-->
+<!--        </p>-->
+<!--    </div>-->
 </form>
-<div id="js_toast" style="display: none;">
-    <div class="weui-mask_transparent"></div>
-    <div class="weui-toast">
-        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
-        <p class="weui-toast__content">已完成</p>
-    </div>
-</div>
+<!--<div id="js_toast" style="display: none;">-->
+<!--    <div class="weui-mask_transparent"></div>-->
+<!--    <div class="weui-toast">-->
+<!--        <i class="weui-icon-success-no-circle weui-icon_toast"></i>-->
+<!--        <p class="weui-toast__content">已完成</p>-->
+<!--    </div>-->
+<!--</div>-->
 </body>
 <script type="text/javascript">
     $(function(){
@@ -60,5 +60,26 @@
             }, 2000);
         });
     });
+    function nextStep(){
+        var userName = document.getElementById("userName");
+        var box = document.getElementsByName("Tag");
+        var len = box.length;
+        var apiContentStr= userName;
+
+        for(var i=0;i< len;i++){
+            if(box[i].checked === true){
+                apiContentStr += box[i].value+",";
+            }
+        }
+        if(apiContentStr === userName || apiContentStr.length === userName.length){
+            alert("请勾选需要的资源项!");
+            return;
+        }
+        apiContentStr = apiContentStr.substring(0, apiContentStr.length-1);
+        var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+        httpRequest.open('POST', '', true); //第二步：打开连接
+        httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+        httpRequest.send(apiContentStr);//发送请求 将情头体写在send中
+    }
 </script>
 </html>
