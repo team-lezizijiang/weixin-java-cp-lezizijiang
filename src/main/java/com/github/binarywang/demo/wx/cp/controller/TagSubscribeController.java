@@ -7,6 +7,9 @@ import com.github.binarywang.demo.wx.cp.SubscriberRepository;
 import com.github.binarywang.demo.wx.cp.config.WxCpProperties;
 import com.github.binarywang.demo.wx.cp.model.TagModel;
 import com.github.binarywang.demo.wx.cp.utils.DbUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.WxCpService;
@@ -18,15 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -92,15 +90,20 @@ public class TagSubscribeController {
     }
 
     // 注解可能存在问题，httpRequest发送信息内容不知道什么格式
+    @ResponseBody
     @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
-    public String dealWithSubscribe(@RequestParam(value = "apiContentStr") String apiContentStr) throws SQLException, ClassNotFoundException {
-        String[] tagList = apiContentStr.split(",");
+    public String dealWithSubscribe(@RequestBody() String[] tagList) {
+        logger.info(Arrays.toString(tagList));
         String userName = tagList[0];
+        Subscriber subscriber = subscriberRepository.findByUsername(userName);
         if (tagList.length <= 1) {
             return "fail";
         }
-        for (int i = 1; i < tagList.length; i++) {
-            DbUtils.subscribe(userName, tagList[i]);
+        for (String tag: tagList) {
+            if (tag.equals(userName)){
+                continue;
+            }
+            subscriber.getAuthors().add(authorRepository.findByName(tag));
         }
         return "success";
     }
