@@ -1,6 +1,7 @@
 package com.github.binarywang.demo.wx.cp.controller;
 
 import com.github.binarywang.demo.wx.cp.config.WxCpProperties;
+import com.github.binarywang.demo.wx.cp.model.TagModel;
 import com.github.binarywang.demo.wx.cp.utils.DbUtils;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -17,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.text.html.HTML;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -31,7 +35,16 @@ public class TagSubscribeController {
     public String showTags(@RequestParam("code") String code, @RequestParam("state") int state, Model model) throws SQLException, ClassNotFoundException {
         String username = getUsername(code);
         model.addAttribute("username", username);
-        model.addAttribute("AllTags", DbUtils.getAuthors());
+        List<TagModel> modelList = new ArrayList<>();
+        List<String> tags = DbUtils.getAuthors();
+        List<String> subscribed = DbUtils.getTagBySubscriber(username);
+        for(int i = 0; i < tags.size(); i++){
+            TagModel tag = new TagModel(tags.get(i));
+            if(subscribed.contains(tag.getAuthor()))
+                tag.setChecked(true);
+            modelList.add(tag);
+        }
+        model.addAttribute("AllTags", modelList);
         return "tags";
     } // todo: 使用checkbox的tag订阅器
 

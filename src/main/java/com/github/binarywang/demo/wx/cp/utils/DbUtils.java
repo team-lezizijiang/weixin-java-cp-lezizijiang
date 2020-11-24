@@ -218,6 +218,22 @@ public class DbUtils {
         }
         return r;
     }
+    public static List<String> getTagBySubscriber(String username) throws ClassNotFoundException, SQLException {
+        // 1、加载数据库驱动（ 成功加载后，会将Driver类的实例注册到DriverManager类中）
+        Class.forName(driver);
+        // 2、获取数据库连接
+        conn = DriverManager.getConnection(url, username, password);
+        // 3、获取数据库操作对象
+        stmt = conn.prepareStatement("select tag from subscriber where user_name = ?");
+        // 4、定义操作的SQL语句
+        stmt.setString(1, username);
+        ArrayList<String> r = new ArrayList<>();
+        rs = stmt.executeQuery();
+        while (rs.next()) {
+            r.add(rs.getString("tag"));
+        }
+        return r;
+    }
 
     public static void subscribe(String user_name, String author) throws SQLException, ClassNotFoundException {
         // 1、加载数据库驱动（ 成功加载后，会将Driver类的实例注册到DriverManager类中）
