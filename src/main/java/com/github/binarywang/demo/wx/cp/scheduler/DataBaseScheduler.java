@@ -1,5 +1,9 @@
 package com.github.binarywang.demo.wx.cp.scheduler;
 
+import com.github.binarywang.demo.wx.cp.Article;
+import com.github.binarywang.demo.wx.cp.ArticleRepository;
+import com.github.binarywang.demo.wx.cp.Author;
+import com.github.binarywang.demo.wx.cp.Subscriber;
 import com.github.binarywang.demo.wx.cp.builder.MyTextCardBuilder;
 import com.github.binarywang.demo.wx.cp.config.WxCpConfiguration;
 import com.github.binarywang.demo.wx.cp.config.WxCpProperties;
@@ -15,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -22,13 +27,14 @@ import java.util.List;
 public class DataBaseScheduler {
     private static final Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
     private static Long lastArticleID;
+    @Autowired
+    private static ArticleRepository articleRepository;
 
     static {
         try {
             lastArticleID = DbUtils.getLastArticleID();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-            logger.error(e.getMessage());
         }
     } // 初始化为最新
 
@@ -39,9 +45,8 @@ public class DataBaseScheduler {
     public void update() {
         logger.info("check update");
         try {
-            if (DbUtils.getLastArticleID() > lastArticleID) {
-                List<Long> newArticles = DbUtils.getNewArticleID(lastArticleID);
-                lastArticleID = DbUtils.getLastArticleID();
+            List<Article> newArticles = articleRepository.findAllByPubdateAfter(new Date(lastArticleID));
+            if (newArticles.size() > 0) {
                 logger.info("new article detected, start push");
                 this.push(newArticles); // 检测到最新文章， 更新并向订阅用户推送
             } else {
@@ -60,7 +65,7 @@ public class DataBaseScheduler {
 
     }
 
-    private void push(List<Long> newArticles) throws SQLException, ClassNotFoundException, WxErrorException {
+    private void push(List<Article> newArticles) throws SQLException, ClassNotFoundException, WxErrorException {
         WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
         config.setCorpId(pr.getCorpId());      // 设置微信企业号的appid
         config.setCorpSecret(pr.getAppConfigs().get(0).getSecret());  // 设置微信企业号的app corpSecret
@@ -70,18 +75,18 @@ public class DataBaseScheduler {
 
         WxCpServiceImpl wxCpService = new WxCpServiceImpl();
         wxCpService.setWxCpConfigStorage(config);
-        for (Long articleID : newArticles) { // 新文章
-            for (String author : DbUtils.getAuthors(articleID)) { //文章标签
-                for (String username : DbUtils.getSubscribers(author)) { // 订阅用户
-                    passiveSendMsg(WxCpConfiguration.getCpService(1000002), author, articleID, username); //主动发送卡片消息，展示
+        for (Article article : newArticles) { // 新文章
+            for (Author author : article.getAuthors()) { //文章标签
+                for (Subscriber subscriber : author.getSubscribers()) { // 订阅用户
+                    passiveSendMsg(WxCpConfiguration.getCpService(1000002), author.getName(), article, subscriber.getUsername()); //主动发送卡片消息，展示
                 }
             }
         }
     }
 
-    public void passiveSendMsg(WxCpService wxCpService, String title, Long articleID, String UserName) throws WxErrorException, SQLException, ClassNotFoundException {
+    public void passiveSendMsg(WxCpService wxCpService, String title, Article article, String UserName) throws WxErrorException, SQLException, ClassNotFoundException {
         WxCpMessage wxCpMessage =
-            new MyTextCardBuilder().buildTestCardMsg(title, UserName, DbUtils.getTitle(articleID), "https://message.lezizijiang.cn/content/?articleID=" + articleID, "全文");
+            new MyTextCardBuilder().buildTestCardMsg(title, UserName, article.getTitle(), "https://message.lezizijiang.cn/content/?articleID=" + article.getArticleID(), "全文");
         wxCpService.messageSend(wxCpMessage);
     }
 }

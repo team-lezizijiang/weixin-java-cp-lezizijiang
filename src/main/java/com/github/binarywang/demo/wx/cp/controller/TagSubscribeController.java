@@ -1,5 +1,9 @@
 package com.github.binarywang.demo.wx.cp.controller;
 
+import com.github.binarywang.demo.wx.cp.Author;
+import com.github.binarywang.demo.wx.cp.AuthorRepository;
+import com.github.binarywang.demo.wx.cp.Subscriber;
+import com.github.binarywang.demo.wx.cp.SubscriberRepository;
 import com.github.binarywang.demo.wx.cp.config.WxCpProperties;
 import com.github.binarywang.demo.wx.cp.model.TagModel;
 import com.github.binarywang.demo.wx.cp.utils.DbUtils;
@@ -17,12 +21,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.text.html.HTML;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @Slf4j
@@ -30,6 +34,10 @@ public class TagSubscribeController {
     public static final Logger logger = LoggerFactory.getLogger(ArticleContentController.class);
     @Autowired
     private WxCpProperties pr;
+    @Autowired
+    private AuthorRepository authorRepository;
+    @Autowired
+    private SubscriberRepository subscriberRepository;
 
 
     @RequestMapping("/tags")
@@ -37,11 +45,19 @@ public class TagSubscribeController {
         String username = getUsername(code);
         model.addAttribute("username", username);
         List<TagModel> modelList = new ArrayList<>();
-        List<String> tags = DbUtils.getAuthors();
-        List<String> subscribed = DbUtils.getTagBySubscriber(username);
-        for(int i = 0; i < tags.size(); i++){
-            TagModel tag = new TagModel(tags.get(i));
-            if(subscribed.contains(tag.getAuthor()))
+        Set<Author> subscribed;
+        try {
+            subscribed = subscriberRepository.findByUsername(username).getAuthors();
+        } catch (NullPointerException e) {
+            Subscriber subscriber = new Subscriber();
+            subscriber.setUser_name(username);
+            subscriber.setId((int) (subscriberRepository.count() + 1));
+            subscribed = new HashSet<>();
+            subscriberRepository.save(subscriber);
+        }
+        for (Author author : authorRepository.findAll()) {
+            TagModel tag = new TagModel(author.getName());
+            if (subscribed.contains(author))
                 tag.setChecked(true);
             modelList.add(tag);
         }
@@ -74,15 +90,16 @@ public class TagSubscribeController {
         res[2] = wxCpOauth2UserInfo.getOpenId();
         return res[0];
     }
+
     // 注解可能存在问题，httpRequest发送信息内容不知道什么格式
-    @RequestMapping(value="/subscribe",method = RequestMethod.POST)
-    public String dealWithSubscribe(@RequestParam(value = "apiContentStr")String apiContentStr) throws SQLException, ClassNotFoundException {
+    @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
+    public String dealWithSubscribe(@RequestParam(value = "apiContentStr") String apiContentStr) throws SQLException, ClassNotFoundException {
         String[] tagList = apiContentStr.split(",");
         String userName = tagList[0];
-        if(tagList.length <= 1){
+        if (tagList.length <= 1) {
             return "fail";
         }
-        for(int i = 1; i < tagList.length;i++){
+        for (int i = 1; i < tagList.length; i++) {
             DbUtils.subscribe(userName, tagList[i]);
         }
         return "success";

@@ -6,9 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TagModel {
-    String author;
-    boolean isChecked;
-    public TagModel(String author){
+    public String author;
+    public boolean isChecked;
+
+    public TagModel(String author) {
         this.author = author;
         this.isChecked = false;
     }
