@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -73,5 +74,17 @@ public class TagSubscribeController {
         res[2] = wxCpOauth2UserInfo.getOpenId();
         return res[0];
     }
-
+    // 注解可能存在问题，httpRequest发送信息内容不知道什么格式
+    @RequestMapping(value="/subscribe",method = RequestMethod.POST)
+    public String dealWithSubscribe(@RequestParam(value = "apiContentStr")String apiContentStr) throws SQLException, ClassNotFoundException {
+        String[] tagList = apiContentStr.split(",");
+        String userName = tagList[0];
+        if(tagList.length <= 1){
+            return "fail";
+        }
+        for(int i = 1; i < tagList.length;i++){
+            DbUtils.subscribe(userName, tagList[i]);
+        }
+        return "success";
+    }
 }

@@ -28,7 +28,7 @@
     </div>
     <div class="weui-form__opr-area">
         <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips"></a>
-        <input class="b_button" type="submit" value="提交" />
+        <input class="b_button" type="submit" value="提交" onclick="nextStep()"/>
         <input class="b_button" type="reset" value="重置" />
     </div>
 <!--    <div class="weui-form__tips-area">-->
@@ -64,22 +64,23 @@
         var userName = document.getElementById("userName");
         var box = document.getElementsByName("Tag");
         var len = box.length;
-        var apiContentStr= userName;
+        var apiContentStr= userName+",";
 
         for(var i=0;i< len;i++){
             if(box[i].checked === true){
                 apiContentStr += box[i].value+",";
             }
         }
-        if(apiContentStr === userName || apiContentStr.length === userName.length){
+        if(apiContentStr === userName+"," || apiContentStr.length === userName.length+1){
             alert("请勾选需要的资源项!");
             return;
         }
         apiContentStr = apiContentStr.substring(0, apiContentStr.length-1);
         var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
-        httpRequest.open('POST', '', true); //第二步：打开连接
-        httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
-        httpRequest.send(apiContentStr);//发送请求 将情头体写在send中
+        httpRequest.open('POST', 'message.lezizijiang.cn/subscribe', true); //第二步：打开连接
+        httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        httpRequest.send(apiContentStr);
+        // todo 确认信息类型，增加注解
     }
 </script>
 </html>
