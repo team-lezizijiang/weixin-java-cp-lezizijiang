@@ -35,8 +35,13 @@ public class TagSubscribeController {
 
 
     @RequestMapping("/tags")
-    public String showTags(@RequestParam("code") String code, @RequestParam("state") int state, Model model) throws SQLException, ClassNotFoundException {
-        String username = getUsername(code);
+    public String showTags(@RequestParam(value = "code", defaultValue = "0") String code, @RequestParam("state") int state, Model model) throws SQLException, ClassNotFoundException {
+        String username;
+        if (code.equals("0")){
+            username = "debug";
+        } else {
+            username = getUsername(code);
+        }
         model.addAttribute("username", username);
         List<TagModel> modelList = new ArrayList<>();
         Set<Author> subscribed;
@@ -49,6 +54,7 @@ public class TagSubscribeController {
             subscribed = new HashSet<>();
             subscriberRepository.save(subscriber);
         }
+        logger.info(username + "logged in");
         for (Author author : authorRepository.findAll()) {
             TagModel tag = new TagModel(author.getName());
             if (subscribed.contains(author))
@@ -103,6 +109,6 @@ public class TagSubscribeController {
             subscriber.setAuthors(authors);
             subscriberRepository.save(subscriber);
         }
-        return "success";
+        return "{\"success\"}";
     }
 }
