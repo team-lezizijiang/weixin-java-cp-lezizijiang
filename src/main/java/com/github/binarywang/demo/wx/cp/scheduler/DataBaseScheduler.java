@@ -28,7 +28,7 @@ public class DataBaseScheduler {
     private static final Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
     private static Long lastArticleID;
     @Autowired
-    private static ArticleRepository articleRepository;
+    private ArticleRepository articleRepository;
 
     static {
         try {
