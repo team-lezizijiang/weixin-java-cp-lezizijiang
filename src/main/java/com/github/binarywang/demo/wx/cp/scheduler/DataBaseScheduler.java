@@ -28,7 +28,7 @@ public class DataBaseScheduler {
     private static final Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
     private static Long lastArticleID;
     @Autowired
-    private static ArticleRepository articleRepository;
+    private ArticleRepository articleRepository;
 
     static {
         try {
@@ -46,6 +46,7 @@ public class DataBaseScheduler {
         logger.info("check update");
         try {
             List<Article> newArticles = articleRepository.findAllByPubdateAfter(new Date(lastArticleID));
+            lastArticleID = articleRepository.getTopByOrderByArticleIDDesc().getArticleID();
             if (newArticles.size() > 0) {
                 logger.info("new article detected, start push");
                 this.push(newArticles); // 检测到最新文章， 更新并向订阅用户推送
