@@ -35,7 +35,7 @@ public class TagSubscribeController {
 
 
     @RequestMapping("/tags")
-    public String showTags(@RequestParam(value = "code", defaultValue = "0") String code, @RequestParam("state") int state, Model model) throws SQLException, ClassNotFoundException {
+    public String showTags(@RequestParam(value = "code", defaultValue = "0") String code, @RequestParam("state") int state, Model model) {
         String username;
         if (code.equals("0")){
             username = "debug";
