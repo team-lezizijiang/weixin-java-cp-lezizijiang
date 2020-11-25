@@ -98,7 +98,10 @@ public class TagSubscribeController {
             if (tag.equals(userName)) {
                 continue;
             }
-            subscriber.getAuthors().add(authorRepository.findByName(tag));
+            Set<Author> authors = new HashSet<>();
+            authors.add(authorRepository.findByName(tag));
+            subscriber.setAuthors(authors);
+            subscriberRepository.save(subscriber);
         }
         return "success";
     }
