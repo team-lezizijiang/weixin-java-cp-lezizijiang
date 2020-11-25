@@ -39,7 +39,6 @@ public class DbUtils {
         stmt.setString(1, user_name);
         stmt.setString(2, author);
         stmt.executeUpdate();
-
     }
 }
 

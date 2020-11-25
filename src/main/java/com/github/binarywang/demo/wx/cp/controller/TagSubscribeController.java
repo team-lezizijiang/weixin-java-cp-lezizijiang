@@ -6,10 +6,6 @@ import com.github.binarywang.demo.wx.cp.Subscriber;
 import com.github.binarywang.demo.wx.cp.SubscriberRepository;
 import com.github.binarywang.demo.wx.cp.config.WxCpProperties;
 import com.github.binarywang.demo.wx.cp.model.TagModel;
-import com.github.binarywang.demo.wx.cp.utils.DbUtils;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.WxCpService;
@@ -89,7 +85,6 @@ public class TagSubscribeController {
         return res[0];
     }
 
-    // 注解可能存在问题，httpRequest发送信息内容不知道什么格式
     @ResponseBody
     @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
     public String dealWithSubscribe(@RequestBody() String[] tagList) {
@@ -99,8 +94,8 @@ public class TagSubscribeController {
         if (tagList.length <= 1) {
             return "fail";
         }
-        for (String tag: tagList) {
-            if (tag.equals(userName)){
+        for (String tag : tagList) {
+            if (tag.equals(userName)) {
                 continue;
             }
             subscriber.getAuthors().add(authorRepository.findByName(tag));
