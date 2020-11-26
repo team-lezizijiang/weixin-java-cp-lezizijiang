@@ -30,7 +30,6 @@
     </div>
     <div class="weui-form__opr-area">
         <a href="javascript:" class="weui-btn weui-btn_primary" id="commit">提交 </a>
-        <a href="javascript:" class="weui-btn weui-btn_primary" onclick=""> 重置 </a>
     </div>
 </form>
 <div id="toast" style="display: none;">
@@ -80,7 +79,7 @@
                     }, 2000);
                     console.log(json);
                 }else{
-                    if ($warnToast.css('display') != 'none') return;
+                    if ($warnToast.css('display') !== 'none') return;
                     $warnToast.fadeIn(100);
                     setTimeout(function () {
                         $warnToast.fadeOut(100);
