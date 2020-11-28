@@ -1,6 +1,6 @@
 package com.github.binarywang.demo.wx.cp.controller;
 
-import com.github.binarywang.demo.wx.cp.ArticleRepository;
+import com.github.binarywang.demo.wx.cp.repository.ArticleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ArticleContentController {
     public static final Logger logger = LoggerFactory.getLogger(ArticleContentController.class);
+    private final ArticleRepository articleRepository;
+
     @Autowired
-    private ArticleRepository articleRepository;
+    public ArticleContentController(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
     @RequestMapping("/content")
     public String showContent(@RequestParam("articleID") String articleID) {
         Long article_id = Long.parseLong(articleID);
         String content;
-        content = articleRepository.findById(article_id).get().getContent();
-        content = content.replace("\n", "<br>"); //格式化
+        if (articleRepository.findById(article_id).isPresent()) {
+            content = articleRepository.findById(article_id).get().getContent();
+            content = content.replace("\n", "<br>"); //格式化
+        } else {
+            content = "错误，数据库中不存在该文章";
+        }
+        logger.warn("错误，数据库中不存在该文章" + articleID);
+
         return content;
     }
 }

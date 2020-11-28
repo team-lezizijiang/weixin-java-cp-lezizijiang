@@ -1,4 +1,4 @@
-package com.github.binarywang.demo.wx.cp;
+package com.github.binarywang.demo.wx.cp.model;
 
 import javax.persistence.*;
 import java.util.HashSet;

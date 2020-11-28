@@ -1,4 +1,4 @@
-package com.github.binarywang.demo.wx.cp;
+package com.github.binarywang.demo.wx.cp.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ public class Author {
     @Id
     long authorID;
     @ManyToMany(targetEntity = Article.class, mappedBy = "authors")
-    Set<Article> articles = new HashSet<Article>();
+    Set<Article> articles = new HashSet<>();
     @ManyToMany(mappedBy = "authors")
     Set<Subscriber> subscribers = new HashSet<>();
 
@@ -29,10 +29,6 @@ public class Author {
         return subscribers;
     }
 
-    public void setSubscribers(Set<Subscriber> subscribers) {
-        this.subscribers = subscribers;
-    }
-
     public String getName() {
         return name;
     }
@@ -46,7 +42,7 @@ public class Author {
     }
 
     public void setAuthorID(long authorID) {
-        authorID = authorID;
+        this.authorID = authorID;
     }
 
 
@@ -57,9 +53,5 @@ public class Author {
     public void setArticles(Set<Article> articles) {
         this.articles = articles;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        return ((Author) obj).name == this.name;
-    }
+    
 }

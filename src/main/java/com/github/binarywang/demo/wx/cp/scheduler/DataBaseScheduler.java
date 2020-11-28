@@ -1,18 +1,18 @@
 package com.github.binarywang.demo.wx.cp.scheduler;
 
-import com.github.binarywang.demo.wx.cp.Article;
-import com.github.binarywang.demo.wx.cp.ArticleRepository;
-import com.github.binarywang.demo.wx.cp.Author;
-import com.github.binarywang.demo.wx.cp.Subscriber;
 import com.github.binarywang.demo.wx.cp.builder.MyTextCardBuilder;
 import com.github.binarywang.demo.wx.cp.config.WxCpConfiguration;
 import com.github.binarywang.demo.wx.cp.config.WxCpProperties;
+import com.github.binarywang.demo.wx.cp.model.Article;
+import com.github.binarywang.demo.wx.cp.model.Author;
+import com.github.binarywang.demo.wx.cp.model.Subscriber;
+import com.github.binarywang.demo.wx.cp.repository.ArticleRepository;
+import com.github.binarywang.demo.wx.cp.repository.AuthorRepository;
+import com.github.binarywang.demo.wx.cp.repository.SubscriberRepository;
 import com.github.binarywang.demo.wx.cp.utils.DbUtils;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.api.WxCpService;
-import me.chanjar.weixin.cp.api.impl.WxCpServiceImpl;
 import me.chanjar.weixin.cp.bean.WxCpMessage;
-import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,6 @@ import java.util.List;
 public class DataBaseScheduler {
     private static final Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
     private static Long lastArticleID;
-    @Autowired
-    private ArticleRepository articleRepository;
 
     static {
         try {
@@ -38,8 +36,21 @@ public class DataBaseScheduler {
         }
     } // 初始化为最新
 
+    private final WxCpService service;
+    private final AuthorRepository authorRepository;
+    private final SubscriberRepository subscriberRepository;
+    private final ArticleRepository articleRepository;
     @Autowired
     private WxCpProperties pr;
+
+    @Autowired
+    public DataBaseScheduler(WxCpProperties pr, AuthorRepository authorRepository, SubscriberRepository subscriberRepository, ArticleRepository articleRepository) {
+        super();
+        this.authorRepository = authorRepository;
+        this.subscriberRepository = subscriberRepository;
+        this.service = WxCpConfiguration.getCpService(pr.getAppConfigs().get(0).getAgentId());
+        this.articleRepository = articleRepository;
+    }
 
     @Scheduled(cron = "0 0 8-18 * * *")
     public void update() {
@@ -60,19 +71,10 @@ public class DataBaseScheduler {
     }
 
     private void push(List<Article> newArticles) throws WxErrorException {
-        WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
-        config.setCorpId(pr.getCorpId());      // 设置微信企业号的appid
-        config.setCorpSecret(pr.getAppConfigs().get(0).getSecret());  // 设置微信企业号的app corpSecret
-        config.setAgentId(pr.getAppConfigs().get(0).getAgentId());     // 设置微信企业号应用ID
-        config.setToken(pr.getAppConfigs().get(0).getToken());       // 设置微信企业号应用的token
-        config.setAesKey(pr.getAppConfigs().get(0).getAesKey());      // 设置微信企业号应用的EncodingAESKey
-
-        WxCpServiceImpl wxCpService = new WxCpServiceImpl();
-        wxCpService.setWxCpConfigStorage(config);
         for (Article article : newArticles) { // 新文章
             for (Author author : article.getAuthors()) { //文章标签
                 for (Subscriber subscriber : author.getSubscribers()) { // 订阅用户
-                    passiveSendMsg(WxCpConfiguration.getCpService(1000002), author.getName(), article, subscriber.getUsername()); //主动发送卡片消息，展示
+                    passiveSendMsg(service, author.getName(), article, subscriber.getUsername()); //主动发送卡片消息，展示
                 }
             }
         }

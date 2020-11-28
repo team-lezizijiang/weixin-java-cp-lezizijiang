@@ -2,8 +2,6 @@ package com.github.binarywang.demo.wx.cp.builder;
 
 import me.chanjar.weixin.cp.bean.WxCpMessage;
 
-import java.sql.SQLException;
-
 public class MyTextCardBuilder {
     public WxCpMessage buildTestCardMsg(String title, String userName, String description, String url, String btn) {
         return WxCpMessage.TEXTCARD()
