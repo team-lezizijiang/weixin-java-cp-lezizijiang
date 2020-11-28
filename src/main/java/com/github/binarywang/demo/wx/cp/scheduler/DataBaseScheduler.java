@@ -53,20 +53,13 @@ public class DataBaseScheduler {
             } else {
                 logger.info("already up to date.");
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            logger.error("failed to check db update");
         } catch (WxErrorException e) {
             e.printStackTrace();
-            logger.error("failed to push message");
+            logger.error(e.getMessage());
         }
-
-
     }
 
-    private void push(List<Article> newArticles) throws SQLException, ClassNotFoundException, WxErrorException {
+    private void push(List<Article> newArticles) throws WxErrorException {
         WxCpDefaultConfigImpl config = new WxCpDefaultConfigImpl();
         config.setCorpId(pr.getCorpId());      // 设置微信企业号的appid
         config.setCorpSecret(pr.getAppConfigs().get(0).getSecret());  // 设置微信企业号的app corpSecret
@@ -85,7 +78,7 @@ public class DataBaseScheduler {
         }
     }
 
-    public void passiveSendMsg(WxCpService wxCpService, String title, Article article, String UserName) throws WxErrorException, SQLException, ClassNotFoundException {
+    public void passiveSendMsg(WxCpService wxCpService, String title, Article article, String UserName) throws WxErrorException {
         WxCpMessage wxCpMessage =
             new MyTextCardBuilder().buildTestCardMsg(title, UserName, article.getTitle(), "https://message.lezizijiang.cn/content/?articleID=" + article.getArticleID(), "全文");
         wxCpService.messageSend(wxCpMessage);
