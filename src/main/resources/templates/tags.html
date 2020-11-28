@@ -48,12 +48,13 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
+<script type="text/javascript">
     $(function(){
         var userName = document.getElementById('userName');
         var box = document.getElementsByName("Tag");
         var len = box.length;
         var apiContentStr = [] ;
+        var $toast = $('#toast')
         var $warnToast = $('#warnToast');
         $('#commit').on('click', function (){
             apiContentStr.push(userName.innerText)
