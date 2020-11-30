@@ -3,7 +3,6 @@ package com.github.binarywang.demo.wx.cp.builder;
 import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.bean.WxCpXmlMessage;
 import me.chanjar.weixin.cp.bean.WxCpXmlOutMessage;
-import me.chanjar.weixin.cp.bean.WxCpXmlOutTextMessage;
 
 /**
  * @author Binary Wang(https://github.com/binarywang)

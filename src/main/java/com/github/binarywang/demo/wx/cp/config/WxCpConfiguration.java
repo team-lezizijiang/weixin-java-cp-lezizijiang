@@ -12,6 +12,7 @@ import me.chanjar.weixin.cp.message.WxCpMessageRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
  */
 @Configuration
 @EnableConfigurationProperties(WxCpProperties.class)
+@EnableJpaRepositories("com.github.binarywang.demo.wx.cp.repository")
 public class WxCpConfiguration {
     private static final Map<Integer, WxCpMessageRouter> routers = Maps.newHashMap();
     private static Map<Integer, WxCpService> cpServices = Maps.newHashMap();
@@ -74,7 +76,7 @@ public class WxCpConfiguration {
     }
 
     private WxCpMessageRouter newRouter(WxCpService wxCpService) {
-        final val newRouter = new WxCpMessageRouter(wxCpService);
+        val newRouter = new WxCpMessageRouter(wxCpService);
 
         // 记录所有事件的日志 （异步执行）
         newRouter.rule().handler(this.logHandler).next();

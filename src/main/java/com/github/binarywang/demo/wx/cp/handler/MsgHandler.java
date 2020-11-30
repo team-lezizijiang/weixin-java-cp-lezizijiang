@@ -1,11 +1,11 @@
 package com.github.binarywang.demo.wx.cp.handler;
 
-import com.github.binarywang.demo.wx.cp.Article;
-import com.github.binarywang.demo.wx.cp.ArticleRepository;
-import com.github.binarywang.demo.wx.cp.AuthorRepository;
-import com.github.binarywang.demo.wx.cp.SubscriberRepository;
 import com.github.binarywang.demo.wx.cp.builder.MyTextCardBuilder;
 import com.github.binarywang.demo.wx.cp.builder.TextBuilder;
+import com.github.binarywang.demo.wx.cp.model.Article;
+import com.github.binarywang.demo.wx.cp.repository.ArticleRepository;
+import com.github.binarywang.demo.wx.cp.repository.AuthorRepository;
+import com.github.binarywang.demo.wx.cp.repository.SubscriberRepository;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.cp.api.WxCpService;
@@ -24,12 +24,18 @@ import java.util.Map;
  */
 @Component
 public class MsgHandler extends AbstractHandler {
+    private final AuthorRepository authorRepository;
+    private final SubscriberRepository subscriberRepository;
+    private final ArticleRepository articleRepository;
+
+
     @Autowired
-    private ArticleRepository articleRepository;
-    @Autowired
-    private AuthorRepository authorRepository;
-    @Autowired
-    private SubscriberRepository subscriberRepository;
+    public MsgHandler(ArticleRepository articleRepository, AuthorRepository authorRepository, SubscriberRepository subscriberRepository) {
+        super();
+        this.authorRepository = authorRepository;
+        this.subscriberRepository = subscriberRepository;
+        this.articleRepository = articleRepository;
+    }
 
     @Override
     public WxCpXmlOutMessage handle(WxCpXmlMessage wxMessage, Map<String, Object> context, WxCpService cpService,
@@ -51,7 +57,7 @@ public class MsgHandler extends AbstractHandler {
                 for (int i = 1; i < lst.length; i++) {
                     r = articleRepository.findAllByAuthorsContains(authorRepository.findByName(lst[i]));
                     // 5、执行数据库操作
-                    stringBuffer.append("您查询的关键词" + lst[i] + "对应的标题有\n");
+                    stringBuffer.append("您查询的关键词").append(lst[i]).append("对应的标题有\n");
                     // 6、获取并操作结果集
                     for (Article article : r) {
                         stringBuffer.append(article.getTitle());
@@ -74,7 +80,7 @@ public class MsgHandler extends AbstractHandler {
                 if (lst.length == 1) {
                     stringBuffer.append("对不起，您输入的格式有误，请按照#查询文章内容 标题1的格式使用，中间需要加上空格");
                 }
-                Article article = null;
+                Article article;
                 for (int i = 1; i < lst.length; i++) {
                     article = articleRepository.findByTitle(lst[i]);
                     try {

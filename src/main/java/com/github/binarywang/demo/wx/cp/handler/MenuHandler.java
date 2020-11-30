@@ -1,11 +1,10 @@
 package com.github.binarywang.demo.wx.cp.handler;
 
-import com.github.binarywang.demo.wx.cp.Article;
-import com.github.binarywang.demo.wx.cp.ArticleRepository;
-import com.github.binarywang.demo.wx.cp.Author;
-import com.github.binarywang.demo.wx.cp.AuthorRepository;
 import com.github.binarywang.demo.wx.cp.builder.MyTextCardBuilder;
-import com.github.binarywang.demo.wx.cp.menu.TagMenu;
+import com.github.binarywang.demo.wx.cp.model.Article;
+import com.github.binarywang.demo.wx.cp.model.Author;
+import com.github.binarywang.demo.wx.cp.repository.ArticleRepository;
+import com.github.binarywang.demo.wx.cp.repository.AuthorRepository;
 import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -18,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 
@@ -28,12 +26,16 @@ import java.util.Map;
 @Component
 public class MenuHandler extends AbstractHandler {
     private static final Logger logger = LoggerFactory.getLogger(MenuHandler.class);
+    private final AuthorRepository authorRepository;
+    private final ArticleRepository articleRepository;
+
+
     @Autowired
-    TagMenu tagMenu;
-    @Autowired
-    private ArticleRepository articleRepository;
-    @Autowired
-    private AuthorRepository authorRepository;
+    public MenuHandler(AuthorRepository authorRepository, ArticleRepository articleRepository) {
+        super();
+        this.authorRepository = authorRepository;
+        this.articleRepository = articleRepository;
+    }
 
     @Override
     public WxCpXmlOutMessage handle(WxCpXmlMessage wxMessage, Map<String, Object> context, WxCpService cpService,
@@ -59,7 +61,7 @@ public class MenuHandler extends AbstractHandler {
                 try {
                     passiveSendMsg(cpService, articleRepository.getTopByOrderByArticleIDDesc(), wxMessage.getFromUserName());
                     msg = new StringBuilder();
-                } catch (ClassNotFoundException | SQLException | WxErrorException e) {
+                } catch (WxErrorException e) {
                     e.printStackTrace();
                     logger.error(e.getMessage());
                 }
@@ -78,7 +80,7 @@ public class MenuHandler extends AbstractHandler {
             .build();
     }
 
-    public void passiveSendMsg(WxCpService wxCpService, Article article, String UserName) throws WxErrorException, SQLException, ClassNotFoundException {
+    public void passiveSendMsg(WxCpService wxCpService, Article article, String UserName) throws WxErrorException {
         WxCpMessage wxCpMessage =
             new MyTextCardBuilder().buildTestCardMsg(article.getAuthors().get(0).getName(), UserName, article.getTitle(), "https://message.lezizijiang.cn/content/?articleID=" + article.getArticleID(), "全文");
         wxCpService.messageSend(wxCpMessage);
