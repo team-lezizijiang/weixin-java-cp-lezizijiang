@@ -80,6 +80,11 @@
                     }, 2000);
                     console.log(json);
                 }else{
+                    if ($toast.css('display') !== 'none') return;
+                    $toast.fadeIn(100);
+                    setTimeout(function () {
+                        $toast.fadeOut(100);
+                    }, 2000);
                     console.log("callback失败");
                 }
             };

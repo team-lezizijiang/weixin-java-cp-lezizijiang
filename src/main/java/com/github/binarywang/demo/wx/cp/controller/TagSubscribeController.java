@@ -76,6 +76,7 @@ public class TagSubscribeController {
         } catch (WxErrorException e) {
             e.printStackTrace();
             logger.error(e.getLocalizedMessage());
+            return "登陆错误";
         }
         String[] res = new String[3];
         assert wxCpOauth2UserInfo != null;
@@ -92,17 +93,17 @@ public class TagSubscribeController {
         String userName = tagList[0];
         Subscriber subscriber = subscriberRepository.findByUsername(userName);
         if (tagList.length <= 1) {
-            return "fail";
+            return "{\"fail\"}";
         }
+        Set<Author> authors = new HashSet<>();
         for (String tag : tagList) {
             if (tag.equals(userName)) {
                 continue;
             }
-            Set<Author> authors = new HashSet<>();
             authors.add(authorRepository.findByName(tag));
-            subscriber.setAuthors(authors);
-            subscriberRepository.save(subscriber);
         }
+        subscriber.setAuthors(authors);
+        subscriberRepository.save(subscriber);
         return "{\"success\"}";
     }
 }
