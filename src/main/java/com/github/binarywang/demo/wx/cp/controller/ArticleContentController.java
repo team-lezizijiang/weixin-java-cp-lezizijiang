@@ -32,8 +32,8 @@ public class ArticleContentController {
             content = content.replace("\n", "<br>"); //格式化
         } else {
             content = "错误，数据库中不存在该文章";
+            logger.warn("错误，数据库中不存在该文章" + articleID);
         }
-        logger.warn("错误，数据库中不存在该文章" + articleID);
 
         return content;
     }
