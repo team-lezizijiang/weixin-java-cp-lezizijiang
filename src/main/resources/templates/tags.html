@@ -47,6 +47,13 @@
         <p class="weui-toast__content">订阅失败</p>
     </div>
 </div>
+<div id="otherWarn" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-icon-warn weui-icon_toast"></i>
+        <p class="weui-toast__content">您出现其他问题</p>
+    </div>
+</div>
 </body>
 <script type="text/javascript">
     $(function(){
@@ -56,6 +63,7 @@
         var apiContentStr = [] ;
         var $toast = $('#toast')
         var $warnToast = $('#warnToast');
+        var $otherWarn = $('#otherWarn');
         $('#commit').on('click', function (){
             apiContentStr.push(userName.innerText)
             for (var i = 0; i < len; i++) {
@@ -70,24 +78,35 @@
             httpRequest.open('POST', 'https://message.lezizijiang.cn/subscribe', true); //第二步：打开连接
             httpRequest.setRequestHeader("Content-type", "application/json");
             httpRequest.send(JSON.stringify(apiContentStr));
+            httpRequest.onerror = function(){
+                if ($otherWarn.css('display') !== 'none') return;
+                $otherWarn.fadeIn(100);
+                setTimeout(function () {
+                    $otherWarn.fadeOut(100);
+                }, 2000);
+                console.error("timeout");
+            }
             httpRequest.onreadystatechange = function () {//请求后的回调接口，可将请求成功后要执行的程序写在其中
-                if (httpRequest.readyState === 4 && httpRequest.status === 200) {//验证请求是否发送成功
-                    var json = httpRequest.responseText;//获取到服务端返回的数据`
-                    if ($toast.css('display') !== 'none') return;
-                    $toast.fadeIn(100);
-                    setTimeout(function () {
-                        $toast.fadeOut(100);
-                    }, 2000);
-                    console.log(json);
-                }else{
-                    if ($toast.css('display') !== 'none') return;
-                    $toast.fadeIn(100);
-                    setTimeout(function () {
-                        $toast.fadeOut(100);
-                    }, 2000);
-                    console.log("callback失败");
+                if (httpRequest.readyState === 4) {
+                    if (httpRequest.status === 200) {//验证请求是否发送成功
+                        var json = httpRequest.responseText;//获取到服务端返回的数据
+                        if (json.indexOf("{\"success\"}") !== -1) {
+                            if ($toast.css('display') !== 'none') return;
+                            $toast.fadeIn(100);
+                            setTimeout(function () {
+                                $toast.fadeOut(100);
+                            }, 2000);
+                        } else {
+                            if ($warnToast.css('display') !== 'none') return;
+                            $warnToast.fadeIn(100);
+                            setTimeout(function () {
+                                $warnToast.fadeOut(100);
+                            }, 2000);
+                        }
+                        console.log(json);
+                    }
                 }
-            };
+            }
         });
     });
 </script>
