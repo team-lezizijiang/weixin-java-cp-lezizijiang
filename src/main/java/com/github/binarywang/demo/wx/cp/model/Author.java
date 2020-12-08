@@ -12,7 +12,7 @@ public class Author {
     String name;
     @Id
     long authorID;
-    @ManyToMany(targetEntity = Article.class, mappedBy = "authors", fetch=FetchType.EAGER)
+    @ManyToMany(targetEntity = Article.class, mappedBy = "authors")
     Set<Article> articles = new HashSet<>();
     @ManyToMany(mappedBy = "authors", fetch=FetchType.EAGER)
     Set<Subscriber> subscribers = new HashSet<>();
