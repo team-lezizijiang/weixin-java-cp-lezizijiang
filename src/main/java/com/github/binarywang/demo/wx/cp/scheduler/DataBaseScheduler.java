@@ -26,22 +26,13 @@ import java.util.List;
 @Component
 public class DataBaseScheduler {
     private static final Logger logger = LoggerFactory.getLogger(DataBaseScheduler.class);
-    private static Long lastArticleID;
-
-    static {
-        try {
-            lastArticleID = DbUtils.getLastArticleID();
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-    } // 初始化为最新
+    private static Article lastArticle;
 
     private final WxCpService service;
     private final AuthorRepository authorRepository;
     private final SubscriberRepository subscriberRepository;
     private final ArticleRepository articleRepository;
-    @Autowired
-    private WxCpProperties pr;
+
 
     @Autowired
     public DataBaseScheduler(WxCpProperties pr, AuthorRepository authorRepository, SubscriberRepository subscriberRepository, ArticleRepository articleRepository) {
@@ -56,8 +47,11 @@ public class DataBaseScheduler {
     public void update() {
         logger.info("check update");
         try {
-            List<Article> newArticles = articleRepository.findAllByPubdateAfter(new Date(lastArticleID));
-            lastArticleID = articleRepository.getTopByOrderByArticleIDDesc().getArticleID();
+            if (lastArticle == null){
+                lastArticle = articleRepository.getTopByOrderByArticleIDDesc();
+            }
+            List<Article> newArticles = articleRepository.findAllByPubdateAfter(lastArticle.getPubdate());
+            lastArticle = articleRepository.getTopByOrderByArticleIDDesc();
             if (newArticles.size() > 0) {
                 logger.info("new article detected, start push");
                 this.push(newArticles); // 检测到最新文章， 更新并向订阅用户推送
