@@ -12,9 +12,9 @@ public class Author {
     String name;
     @Id
     long authorID;
-    @ManyToMany(targetEntity = Article.class, mappedBy = "authors")
+    @ManyToMany(targetEntity = Article.class, mappedBy = "authors", fetch=FetchType.EAGER)
     Set<Article> articles = new HashSet<>();
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors", fetch=FetchType.EAGER)
     Set<Subscriber> subscribers = new HashSet<>();
 
     public Author(String s) {
@@ -53,5 +53,5 @@ public class Author {
     public void setArticles(Set<Article> articles) {
         this.articles = articles;
     }
-    
+
 }

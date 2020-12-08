@@ -43,14 +43,14 @@ public class DataBaseScheduler {
         this.articleRepository = articleRepository;
     }
 
-    @Scheduled(cron = "0 0 8-18 * * *")
+    @Scheduled(cron = "0 * 8-18 * * *")
     public void update() {
         logger.info("check update");
         try {
             if (lastArticle == null){
                 lastArticle = articleRepository.getTopByOrderByArticleIDDesc();
             }
-            List<Article> newArticles = articleRepository.findAllByPubdateAfter(lastArticle.getPubdate());
+            List<Article> newArticles = articleRepository.findAllWithPubdateAfter(lastArticle.getPubdate());
             lastArticle = articleRepository.getTopByOrderByArticleIDDesc();
             if (newArticles.size() > 0) {
                 logger.info("new article detected, start push");

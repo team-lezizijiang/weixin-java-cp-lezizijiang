@@ -11,7 +11,7 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long articleID;
-    @Column(name = "pub_date")
+    @Column(name = "pubdate")
     private Date pubdate;
     private String title;
     private String content;
@@ -41,7 +41,7 @@ public class Article {
         this.content = content;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "article_author",// 使用 @JoinTable 标签的 name 属性注解第三方表名称
         joinColumns = {@JoinColumn(name = "ArticleID")},// 使用 joinColumns 属性来注解当前实体类在第三方表中的字段名称并指向该对象
         inverseJoinColumns = {@JoinColumn(name = "authorID")}// 使用 inverseJoinColumns 属性来注解当前实体类持有引用对象在第三方表中的字段名称并指向被引用对象表
