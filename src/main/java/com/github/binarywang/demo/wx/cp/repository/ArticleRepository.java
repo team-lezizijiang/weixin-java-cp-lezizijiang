@@ -10,8 +10,7 @@ import java.sql.Date;
 import java.util.List;
 
 public interface ArticleRepository extends CrudRepository<Article, Long> {
-    @Query("select a from Article a where a.pubdate >= :pubdate")
-    List<Article> findAllWithPubdateAfter(@Param("pubdate") Date pubdate);
+    List<Article> findAllByArticleIDGreaterThan(Long ArticleId);
 
     Article getTopByOrderByArticleIDDesc();
 
