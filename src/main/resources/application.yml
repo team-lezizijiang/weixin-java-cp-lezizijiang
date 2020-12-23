@@ -7,10 +7,10 @@ logging:
         path: ./
 wechat:
     cp:
-        corpId: "ww0db1bc3ecc363cfc"
+        corpId: "ww0543e43296568974"
         appConfigs:
-            -   agentId: 1000002
-                secret: "oCVhYswuy8D9dcsKsWFswA7M913oVezqp72y4uJ9R-I"
+            -   agentId: 1000008
+                secret: "tZPGQYnREhdecBbOih9kY4QM02q2G9dBVeY7jazjNIs"
                 token: "3hVOIUc7TAlPZ6pk46pblwbj3hl5Uz"
                 aesKey: "MsqxNquQnFpaJ3bLoB43hRYhgYE6PkWnMfeUIjIcLjg"
 server:

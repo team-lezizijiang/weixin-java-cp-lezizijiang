@@ -49,6 +49,7 @@ public class MenuHandler extends AbstractHandler {
                 msg = new StringBuilder("输入#查找关键词 关键词来查找文章\n");
                 msg.append("输入#订阅 标签 来订阅文章标签\n");
                 msg.append("输入#查询文章内容 标题1 来查看文章内容");
+                msg.append("使用菜单 -> 标签群 订阅你感兴趣的发文机构，我们将会自动推送最新的发文");
                 break;
             }
             case ("TAGS"): {
