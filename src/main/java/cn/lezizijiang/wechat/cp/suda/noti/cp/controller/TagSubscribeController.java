@@ -22,6 +22,7 @@ import java.util.*;
 
 @Controller
 @Slf4j
+@RequestMapping("/tags")
 public class TagSubscribeController {
     public static final Logger logger = LoggerFactory.getLogger(ArticleContentController.class);
     private final WxCpService service;
@@ -38,7 +39,7 @@ public class TagSubscribeController {
     }
 
 
-    @RequestMapping("/tags")
+    @GetMapping
     public String showTags(@RequestParam(value = "code", defaultValue = "0") String code, @RequestParam("state") int state, Model model) {
         String username;
         if (code.equals("0")) {
